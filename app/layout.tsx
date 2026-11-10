@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Calistoga, Inter } from "next/font/google";
 import { Header } from "@/components/site/header";
+import { Footer } from "@/components/site/footer";
 import "./globals.css";
 
 // Two font families only (DESIGN.md section 3).
@@ -35,6 +36,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main" className="flex-1">
           {children}
         </main>
+        <Footer />
+
       </body>
     </html>
   );

@@ -9,15 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-
-// Anchors point at the home page sections we will build next.
-// They become real routes when the Courses / Community pages exist.
-const NAV_LINKS = [
-  { label: "Career paths", href: "/#paths" },
-  { label: "How it works", href: "/#how" },
-  { label: "Community", href: "/#community" },
-  { label: "Courses", href: "/#courses" },
-];
+import { NAV_LINKS } from "@/components/site/nav-links";
 
 // The wordmark: one "node" dot (the signature of the Atlas design) + the name.
 function Wordmark() {

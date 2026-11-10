@@ -6,7 +6,16 @@ Slogan: "Better experience for every client and visitor." Every design and code 
 
 ## Project
 
-"MentorLann": a learning + community website for future-career learners, built with Next.js (App Router), Tailwind CSS v4 and TypeScript. Product scope and section order are in [SPEC.md](SPEC.md). Supabase is the chosen backend (auth + database) but is deferred; design comes first and nothing is installed or connected yet.
+"MentorLann": a learning + community website for future-career learners, built with Next.js (App Router), Tailwind CSS v4 and TypeScript. Product scope and section order are in [SPEC.md](SPEC.md). Planned backend: PostgreSQL on Supabase + Prisma + Zod (Supabase Auth is not used); the auth library is still to be decided (Better Auth vs Auth.js, see SPEC.md). Backend is Phase 2 and nothing is installed or connected yet. Site language is English only; tagline: "Learn Together. Grow Together." Brand colors: navy, royal blue, green, white (see DESIGN.md).
+
+## Working mode: Claude writes, Lin Wai reads and learns (set by Lin Wai, updated)
+
+Lin Wai wants Claude to write the code, and to explain it step by step so they can understand it and talk about it in interviews:
+- Write code in small steps (one file or one idea at a time). After each step, explain in Burmese what the code does and why it is written that way; keep code, filenames, commands and technical terms in English.
+- After each step, add 2–4 interview questions with short model answers (questions and answers in English, with a one-line Burmese gloss).
+- Still ask before installing packages, changing config, running migrations, or making big changes; explain why a dependency is needed first.
+- Do not jump to the next feature until Lin Wai confirms. Suggest a commit message after each finished unit.
+- `docs/DEVELOPMENT_PROGRESS.md` may only be created or updated after approval.
 
 Built so far: design tokens in `app/globals.css`, fonts and metadata in `app/layout.tsx`, and the sticky Header (`components/site/header.tsx`, shadcn Sheet for mobile). `app/page.tsx` is a temporary placeholder until the cinematic Hero is built. shadcn/ui is set up (`components.json`, `components/ui/`); hero video files live in `public/media/`.
 

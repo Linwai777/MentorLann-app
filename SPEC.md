@@ -47,7 +47,9 @@ Source: Pexels, "College Students Collaborative Study Session" (University of Ed
 - Next.js 16 App Router, Tailwind v4, TypeScript.
 - shadcn/ui for interactive parts (navigation menu, dialog, tabs, accordion).
 - Layout inspiration: 21st.dev patterns (reference only, do not copy).
-- Backend: Supabase later. Design first; no login or database in this phase.
+- Backend (decided): PostgreSQL hosted on Supabase, accessed through Prisma ORM, with Zod for validation. Supabase Auth is NOT used, so there is only one auth system. Auth library: DECISION PENDING between Better Auth (recommended: Auth.js is now security-fixes-only and its own team recommends Better Auth for new projects) and Auth.js as originally planned. Nothing backend is installed in Phase 1.
+- Language: English only for now. Burmese UI is deferred (it would also need a Myanmar-script font, because Calistoga and Inter do not include Myanmar glyphs).
+- Tagline: "Learn Together. Grow Together."
 
 ## Libraries to add (approved by the request, installed at the step that needs them)
 three, @react-three/fiber, @react-three/drei (only if needed), gsap, motion, shadcn/ui (with its dependencies).

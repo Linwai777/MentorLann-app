@@ -29,7 +29,7 @@ function Wordmark() {
     >
       <span
         aria-hidden="true"
-        className="size-3 rounded-full bg-signal ring-4 ring-signal/20"
+        className="size-3 rounded-full bg-royal ring-4 ring-royal/20"
       />
       <span className="font-display text-xl leading-none tracking-tight text-ink">
         MentorLann
@@ -44,12 +44,12 @@ export function Header() {
       {/* Skip link: the first thing keyboard users reach */}
       <a
         href="#main"
-        className="sr-only z-[60] rounded-md bg-ink px-4 py-3 text-paper focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        className="sr-only z-[60] rounded-md bg-ink px-4 py-3 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
       >
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-sm supports-[backdrop-filter]:bg-paper/85">
+      <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur-sm supports-[backdrop-filter]:bg-white/85">
         <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6 md:h-20">
           <Wordmark />
 

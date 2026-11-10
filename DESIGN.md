@@ -2,7 +2,9 @@
 
 Slogan: "Better experience for every client and visitor."
 Product: learning + community website for future-career learners (all ages, English).
-Concept: **The Atlas.** A warm paper map that helps you find your next step. Content sits on paper, a single dotted "route" and round "nodes" connect the sections, and the same nodes appear as the 3D hero object. Editorial, human, optimistic. Not a purple-gradient tech startup.
+Tagline: "Learn Together. Grow Together."
+Brand direction: modern, minimal, professional, welcoming, trustworthy. Colors: navy, royal blue, green accents, white (decided by Lin Wai, replacing the earlier cream and orange palette).
+Concept: **The Atlas.** A clean map that helps you find your next step. Content sits on white, a single dotted "route" and round "nodes" connect the sections, and the same nodes appear as the 3D hero object (the 3D is optional and last; see section 9). Human, optimistic. Not a purple-gradient tech startup.
 Dials: variance 6 (asymmetric but calm) · motion 5 · density 5.
 
 ## 1. Principles
@@ -14,20 +16,21 @@ Dials: variance 6 (asymmetric but calm) · motion 5 · density 5.
 ## 2. Color tokens (CSS variables in globals.css; never raw hex in components)
 | Token | Hex | Use |
 |---|---|---|
-| --color-paper | #FBF7F0 | Page background |
-| --color-surface | #FFFFFF | Cards, panels |
-| --color-ink | #101A33 | Text, headings, dark sections (darkened from #14213D so ink text on signal reaches 4.7:1; #14213D only gave 4.3:1) |
-| --color-ink-soft | #4B5563 | Secondary text (7:1 on paper) |
-| --color-line | #D9D2C3 | 1px borders on paper |
-| --color-signal | #E4572E | Main CTA fill, active node (ink text on it: 4.7:1) |
-| --color-signal-text | #B8401C | Signal color used as text/links (5.4:1 on paper) |
-| --color-forest | #1F6F5C | Progress, success, "community" accents |
-| --color-sun | #F2B84B | Highlights, small badges only |
-| --color-ink-contrast | #FBF7F0 | Text on ink backgrounds |
+| --color-white | #FFFFFF | Page background, cards, text on dark/royal/green |
+| --color-surface-soft | #F4F7FC | Alternating section backgrounds, muted areas |
+| --color-ink | #0B1F4D | Navy: text, headings, dark sections (15.9:1 on white) |
+| --color-ink-soft | #475569 | Secondary text (7.6:1 on white, 7.1:1 on surface-soft) |
+| --color-line | #D5DDEB | 1px decorative borders |
+| --color-edge | #8A94A6 | Borders of inputs and controls that must be seen (3.1:1 on white) |
+| --color-royal | #1D4ED8 | Royal blue: primary buttons, links, active node (white text on it: 6.7:1) |
+| --color-royal-deep | #1E40AF | Hover/pressed state, link hover (8.7:1 on white) |
+| --color-green | #15803D | Green accent: progress, success, community, mentors (5.0:1 on white) |
+| --color-green-soft | #DCFCE7 | Light green badge background (green text on it: 4.6:1) |
+| --color-green-light | #4ADE80 | Green on dark navy sections only (9.2:1 on ink) |
 | --color-destructive | #DC2626 | Errors |
-| --color-ring | #14213D | Focus ring (2px, offset 2px; on dark use paper) |
+| --color-ring | #1D4ED8 | Focus ring (2px, offset 2px; on navy sections use white) |
 
-Rules: text at least 4.5:1; UI edges at least 3:1 where they carry meaning; color is never the only signal. Dark sections use ink background with paper text. No default purple/blue gradients; flat color or a single soft radial of `sun` at low opacity is the only allowed glow.
+All pairs above were calculated with the WCAG formula (script run, not eyeballed). Rules: text at least 4.5:1; UI edges at least 3:1 where they carry meaning; color is never the only signal. Royal blue is NOT used as text on navy (only 2.4:1); on navy use white or green-light. Dark sections use ink background with white text. No gradients; flat color only.
 
 ## 3. Typography (2 families)
 - Display: **Calistoga** (warm, human). Headings only, 400 weight, line-height 1.1, tight tracking.
@@ -40,15 +43,15 @@ Rules: text at least 4.5:1; UI edges at least 3:1 where they carry meaning; colo
 - 8px grid. Container 1200px, section padding 80–128px desktop, 56–72px mobile.
 - Asymmetric 12-column grid on desktop (text 7 cols, visual 5 cols), single column on mobile.
 - Borders 1px `--color-line`. Radius 12px cards, 999px for pills and nodes, 8px inputs. No heavy shadows; floating layers get one small crisp shadow.
-- **Route line:** a 1.5px dashed `--color-ink` line (opacity 0.25) running down the left side of the page on desktop between section numbers (01, 02, 03 …). Each section label is a node (12px circle, filled `signal` when in view).
+- **Route line:** a 1.5px dashed `--color-ink` line (opacity 0.25) running down the left side of the page on desktop between section numbers (01, 02, 03 …). Each section label is a node (12px circle, filled `royal` when in view).
 - Section label pattern: node + number + small uppercase label, then the Calistoga heading.
 
 ## 5. Components
-- **Button**: 48px high, 8px radius. Primary = signal fill + ink text. Secondary = 1px ink border, transparent. Hover: translateY(-1px) + shadow, 200ms. Loading and disabled states.
-- **Path card** (career track): paper-white surface, 1px line border, track icon (Lucide, 24px), title, 3 skill chips, duration, "View path" link. Hover lifts with motion; whole card is one link.
+- **Button**: 48px high, 8px radius. Primary = royal fill + white text (hover royal-deep). Secondary = 1px ink border, transparent. Hover: translateY(-1px) + shadow, 200ms. Loading and disabled states.
+- **Path card** (career track): white surface, 1px line border, track icon (Lucide, 24px), title, 3 skill chips, duration, "View path" link. Hover lifts with motion; whole card is one link.
 - **Step item**: large Calistoga number, title, one sentence.
-- **Story card** (community): quote, name, role, small avatar (initials fallback), forest accent bar.
-- **Course preview**: 16:9 reserved thumbnail, level pill, lesson count, progress bar (forest on line track, 8px, numeric label).
+- **Story card** (community): quote, name, role, small avatar (initials fallback), green accent bar.
+- **Course preview**: 16:9 reserved thumbnail, level pill, lesson count, progress bar (green on line track, 8px, numeric label).
 - **Navigation**: wordmark left, 4 links, "Join free" button. Mobile menu uses shadcn Sheet with labelled trigger, 44px targets, focus trap.
 - **Forms** (later): visible labels, errors under fields with aria-describedby, 16px inputs.
 - States for every list: loading skeleton, empty, error with retry.
@@ -59,7 +62,7 @@ Lucide SVG only. Decorative `aria-hidden`; icon-only buttons need `aria-label`. 
 ## 7. Cinematic hero (signature section)
 A full-viewport, film-like opening. Layers from back to front:
 1. **Video background**: slow, calm footage of people learning, building and meeting (hands on laptops, workshops, city mornings). Muted, looped, `playsinline`, no audio track.
-2. **Ink overlay**: `--color-ink` at 55–70% opacity plus a bottom fade into `--color-paper`, so white headline text always reaches 4.5:1 contrast. Check against the brightest frame, not the average.
+2. **Ink overlay**: `--color-ink` at 55–70% opacity plus a bottom fade into `--color-white`, so white headline text always reaches 4.5:1 contrast. Check against the brightest frame, not the average.
 3. **Path nodes (3D)**: the React Three Fiber floating nodes sit on top of the video on desktop only, tilting toward the pointer.
 4. **Content**: Calistoga headline (hero scale), one-sentence promise, primary + secondary CTA, small scroll cue.
 
@@ -72,11 +75,11 @@ Video rules (performance and access):
 - A visible Pause/Play button (44x44px, labelled) for WCAG 2.2.2. Video is decorative: `aria-hidden`, no captions needed because there is no speech.
 - Pause playback when the hero leaves the viewport (IntersectionObserver).
 - Reserve the hero height (`100svh`, min 560px) so there is no layout shift.
-- Footage must be licensed or self-made. OPEN: choose the source (own footage, stock, or generated).
+- Footage must be licensed or self-made. Current clip: Pexels stock (see SPEC.md). Because many MentorLann learners are in Myanmar and often on slower networks, treat the video as optional polish: poster first, no video on mobile, and replace the footage with local Myanmar learners when possible.
 
 ## 8. Animated components
 A small, consistent set. Each has a purpose, none loops forever.
-- **Route progress**: the dashed route line draws itself (stroke-dashoffset) as the page scrolls; nodes fill with `signal` when reached.
+- **Route progress**: the dashed route line draws itself (stroke-dashoffset) as the page scrolls; nodes fill with `royal` when reached.
 - **Animated counters**: community numbers (learners, mentors, paths) count up once when visible; show the final number to screen readers.
 - **Marquee of skills/careers**: slow horizontal ticker, pauses on hover and focus, static wrapped list under reduced motion.
 - **Path cards**: lift 4px, icon nudges, arrow slides 4px on hover (motion.dev).

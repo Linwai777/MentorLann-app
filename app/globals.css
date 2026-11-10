@@ -4,52 +4,52 @@
 
 /* MentorLann design tokens. Source of truth: DESIGN.md section 2. */
 :root {
-  /* Brand */
-  --paper: #fbf7f0;
-  --surface: #ffffff;
-  --ink: #101a33;
-  --ink-soft: #4b5563;
-  --line: #d9d2c3;
-  --signal: #e4572e;
-  --signal-text: #b8401c;
-  --forest: #1f6f5c;
-  --sun: #f2b84b;
-  --paper-muted: #f1ebdd;
-  --edge: #8a8372; /* 3:1 edge for inputs */
+  /* Brand: navy, royal blue, green, white (DESIGN.md section 2) */
+  --surface-soft: #f4f7fc; /* alternating section background */
+  --ink: #0b1f4d; /* navy: text, headings, dark sections */
+  --ink-soft: #475569; /* secondary text */
+  --line: #d5ddeb; /* decorative 1px borders */
+  --edge: #8a94a6; /* borders of inputs, must reach 3:1 */
+  --royal: #1d4ed8; /* primary buttons, links, active node */
+  --royal-deep: #1e40af; /* hover and pressed state */
+  --green: #15803d; /* progress, success, mentors */
+  --green-soft: #dcfce7; /* light green badge background */
+  --green-light: #4ade80; /* green on dark navy sections only */
 
   /* shadcn semantic tokens mapped to the brand */
-  --background: var(--paper);
+  --background: #ffffff;
   --foreground: var(--ink);
-  --card: var(--surface);
+  --card: #ffffff;
   --card-foreground: var(--ink);
-  --popover: var(--surface);
+  --popover: #ffffff;
   --popover-foreground: var(--ink);
-  --primary: var(--signal);
-  --primary-foreground: var(--ink);
-  --secondary: var(--surface);
+  --primary: var(--royal);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-soft);
   --secondary-foreground: var(--ink);
-  --muted: var(--paper-muted);
+  --muted: var(--surface-soft);
   --muted-foreground: var(--ink-soft);
-  --accent: var(--paper-muted);
+  --accent: var(--surface-soft);
   --accent-foreground: var(--ink);
   --destructive: #dc2626;
   --border: var(--line);
   --input: var(--edge);
-  --ring: var(--ink);
+  --ring: var(--royal);
   --radius: 0.75rem;
 }
 
 @theme inline {
-  /* Brand colors as Tailwind utilities: bg-paper, text-ink, bg-signal ... */
-  --color-paper: var(--paper);
-  --color-surface: var(--surface);
+  /* Brand colors as Tailwind utilities: bg-royal, text-ink, bg-surface-soft ... */
+  --color-surface-soft: var(--surface-soft);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-line: var(--line);
-  --color-signal: var(--signal);
-  --color-signal-text: var(--signal-text);
-  --color-forest: var(--forest);
-  --color-sun: var(--sun);
+  --color-edge: var(--edge);
+  --color-royal: var(--royal);
+  --color-royal-deep: var(--royal-deep);
+  --color-green: var(--green);
+  --color-green-soft: var(--green-soft);
+  --color-green-light: var(--green-light);
 
   /* shadcn semantic colors */
   --color-background: var(--background);

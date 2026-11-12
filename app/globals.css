@@ -101,6 +101,33 @@
   }
 }
 
+/* Hero entrance: start state, only when JavaScript is on AND motion is allowed.
+   `scripting: enabled` is true before the first paint, so there is no flash.
+   Without JS (or in old browsers) the query is false and everything shows.
+   GSAP (components/home/hero-reveal.tsx) animates these to their final state.
+   Failsafe: if the animation never runs, a 0s CSS animation after 3s shows
+   everything anyway, so content can never stay hidden. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  [data-hero-reveal] {
+    opacity: 0;
+    animation: hero-failsafe-show 0s 3s forwards;
+  }
+  [data-hero-curtain] {
+    opacity: 1;
+    animation: hero-failsafe-hide 0s 3s forwards;
+  }
+}
+@keyframes hero-failsafe-show {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes hero-failsafe-hide {
+  to {
+    opacity: 0;
+  }
+}
+
 /* Reduced motion: remove movement, keep instant state changes. */
 @media (prefers-reduced-motion: reduce) {
   html {

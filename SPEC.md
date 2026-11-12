@@ -6,7 +6,7 @@ Status: draft from the Q&A with Lin Wai. Items marked OPEN still need an answer.
 A website where people prepare for their future careers by learning (courses) and by belonging (community). Learning and community have equal weight.
 
 ## Audience
-All ages. Language: English only. The interface must be simple enough for first-time learners and fast on mid-range phones.
+All ages. Primary community: the Myanmar community in Dubai (fast mobile and home internet, so rich media such as the hero video is fine on phones). Language: English only. The interface must be simple enough for first-time learners and fast on mid-range phones.
 
 ## Brand
 - Name: MentorLann (renamed from "Future Careers"; spelling as given by Lin Wai, with double n)

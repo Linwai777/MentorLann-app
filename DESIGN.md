@@ -70,12 +70,12 @@ Entrance sequence on load (total under 1.4s, plays once): overlay fades from 100
 
 Video rules (performance and access):
 - Provide `poster` (WebP/AVIF, same aspect ratio) so the first paint is the poster; the video starts after load (`preload="none"`, then start when idle).
-- Two sources: 1080p desktop (target under 4 MB, 8–12s loop, H.264 MP4 + WebM/AV1) and a 720p mobile source (target under 1.5 MB). Frame rate 24–30fps.
-- Show the poster only (no video) when: `prefers-reduced-motion`, `saveData`, slow connection (`effectiveType` 2g/3g), or battery saver.
+- Two sources: a desktop file (currently 720p, 2.7 MB) for screens 768px and wider, and a mobile file (540p, 1.5 MB) for phones. Frame rate 24–30fps.
+- The primary community (Myanmar community in Dubai) is on fast networks, so phones get the video too. Show the poster only (no video) when the visitor asks for it: `prefers-reduced-motion` or Data Saver (`saveData`).
 - A visible Pause/Play button (44x44px, labelled) for WCAG 2.2.2. Video is decorative: `aria-hidden`, no captions needed because there is no speech.
 - Pause playback when the hero leaves the viewport (IntersectionObserver).
 - Reserve the hero height (`100svh`, min 560px) so there is no layout shift.
-- Footage must be licensed or self-made. Current clip: Pexels stock (see SPEC.md). Because many MentorLann learners are in Myanmar and often on slower networks, treat the video as optional polish: poster first, no video on mobile, and replace the footage with local Myanmar learners when possible.
+- Footage must be licensed or self-made. Current clip: Pexels stock (see SPEC.md). Replace it with footage of the real community (Myanmar learners in Dubai) when possible.
 
 ## 8. Animated components
 A small, consistent set. Each has a purpose, none loops forever.
@@ -102,7 +102,7 @@ Unique title and meta description per page, Open Graph image, semantic headings,
 
 ## 12. Pre-delivery checklist
 - [ ] Hero text contrast checked on the brightest video frame; Pause/Play works by keyboard
-- [ ] Video falls back to poster on reduced motion, saveData and slow networks
+- [ ] Video falls back to poster on reduced motion and Data Saver
 - [ ] Playwright at 375px and 1440px, screenshots, no horizontal scroll
 - [ ] Contrast, focus, keyboard path
 - [ ] Reduced motion tested; 3D falls back correctly

@@ -36,7 +36,7 @@ All pairs above were calculated with the WCAG formula (script run, not eyeballed
 - Display: **Poppins** (geometric, matches the MentorLann logo). Headings only, weights 600–700 (H1 700), line-height 1.05–1.1, tight tracking (-0.02em). Replaced Calistoga after the brand kit (mentorlann-brand-v3) was made.
 - Text/UI: **Inter**. Weights 400, 500, 600.
 - Load with `next/font/google`, expose as `--font-display` and `--font-sans`; remove the Geist fonts from the scaffold.
-- Scale (mobile → desktop): Hero 44 → 80 · H2 32 → 52 · H3 22 → 28 · body 16–18 · small 14 · label 12 uppercase, letter-spacing 0.08em (Inter 600, not a third font).
+- Scale (mobile → desktop): Hero 40 → 68 (hero paragraph 16 → 18) · H2 32 → 52 · H3 22 → 28 · body 16–18 · small 14 · label 12 uppercase, letter-spacing 0.08em (Inter 600, not a third font).
 - Line length 60–72ch. Body line-height 1.6.
 
 ## 4. Layout, shape, signature

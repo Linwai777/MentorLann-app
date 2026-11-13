@@ -64,7 +64,10 @@ export function Hero() {
       <HeroNodes />
 
       {/* Layer 4 (front): content. `data-hero-reveal` marks what animates in. */}
-      <div className="mx-auto w-full max-w-[1200px] px-4 pt-24 pb-16 sm:px-6 md:py-24">
+      {/* Top padding = glass bar height (76/80px) + breathing room, so the
+          text never sits right under the bar (~52px gap on phones, 64px+ on
+          desktop, more when the content is centered on tall screens). */}
+      <div className="mx-auto w-full max-w-[1200px] px-4 pt-32 pb-16 sm:px-6 md:pt-36 md:pb-20">
         <p
           data-hero-reveal
           className="flex items-center gap-2.5 text-xs font-semibold tracking-[0.12em] text-green-light uppercase"
@@ -78,7 +81,7 @@ export function Hero() {
         </p>
         <h1
           id="hero-title"
-          className="mt-4 max-w-3xl font-display text-[44px] leading-[1.05] font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-[80px]"
+          className="mt-4 max-w-3xl font-display text-[40px] leading-[1.05] font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-[68px]"
         >
           {/* Two lines so each one can rise in separately */}
           <span data-hero-reveal className="block">
@@ -90,12 +93,12 @@ export function Hero() {
         </h1>
         <p
           data-hero-reveal
-          className="mt-6 max-w-xl text-lg text-white/85 md:text-xl"
+          className="mt-5 max-w-xl text-base text-white/85 sm:text-lg"
         >
           Free resources, career roadmaps and mentors who have walked the path.
           Made for learners from Myanmar and beyond.
         </p>
-        <div data-hero-reveal className="mt-10 flex flex-col gap-3 sm:flex-row">
+        <div data-hero-reveal className="mt-8 flex flex-col gap-3 sm:flex-row">
           {/* Primary: royal, like the brand. White text on royal is 6.7:1.
               The arrow slides right on hover to say "this takes you forward". */}
           <Button asChild className="hover:shadow-lg hover:shadow-royal/40">
@@ -120,11 +123,11 @@ export function Hero() {
         {/* Highlights: a real list, so screen readers hear "100% free to join" */}
         <ul
           data-hero-reveal
-          className="mt-12 grid max-w-xl grid-cols-3 gap-4 sm:gap-8"
+          className="mt-10 grid max-w-xl grid-cols-3 gap-4 sm:gap-8"
         >
           {HIGHLIGHTS.map((item) => (
             <li key={item.value + item.label}>
-              <span className="block font-display text-2xl font-bold sm:text-3xl">
+              <span className="block font-display text-2xl font-bold">
                 {item.value}
               </span>
               <span className="mt-1 block text-sm leading-snug text-white/75">

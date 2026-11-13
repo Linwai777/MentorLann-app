@@ -3,18 +3,31 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
+  AdditiveBlending,
+  CanvasTexture,
   CatmullRomCurve3,
   Color,
   Group,
   MathUtils,
   Mesh,
+  Points,
   Vector3,
 } from "three";
-import { HERO_NODES } from "@/components/home/hero-nodes-data";
+import { Flag } from "lucide-react";
+import { ROUTE_STEPS } from "@/components/home/hero-nodes-data";
 import { HeroNodesSvg } from "@/components/home/hero-nodes-svg";
 
 // Pointer position in the range -1..1 on both axes (0,0 = screen center).
 type Pointer = { x: number; y: number };
+
+const LAST = ROUTE_STEPS.length - 1;
+const PARTICLE_COUNT = 24;
+const INTRO_DELAY = 0.4; // seconds before the route starts drawing
+const INTRO_DURATION = 1.8; // seconds to draw the whole route
+
+// One reusable vector for maths inside useFrame (creating new objects 60
+// times per second would make work for the garbage collector).
+const temp = new Vector3();
 
 // Read a brand color from our CSS variables so the 3D scene uses the same
 // tokens as the rest of the site (no hardcoded hex in components).
@@ -25,17 +38,25 @@ function readCssColor(name: string, fallback: string) {
   return value || fallback;
 }
 
-// ---------------------------------------------------------------------------
-// Glass shader
-// Our canvas is transparent and sits on top of the video, so three.js
-// "real glass" (transmission) cannot see the video and looks milky.
-// Instead we fake glass the way many sites do, with the "fresnel effect":
-// real glass is almost invisible where you look straight through it, and
-// bright at the edges where you look at it at a steep angle.
-// ---------------------------------------------------------------------------
+// A soft round dot drawn once on a small canvas, used for the light particles.
+function makeGlowTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 64;
+  const ctx = canvas.getContext("2d")!;
+  const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gradient.addColorStop(0, "rgba(255,255,255,1)");
+  gradient.addColorStop(0.35, "rgba(255,255,255,0.35)");
+  gradient.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 64, 64);
+  return new CanvasTexture(canvas);
+}
 
-// Runs once per vertex: passes the surface direction (normal) and the
-// direction toward the camera to the fragment shader.
+// ---------------------------------------------------------------------------
+// Glass shader (fresnel): see-through in the middle, bright at the rim, plus a
+// sharp highlight. Real three.js "transmission" glass cannot see the HTML
+// background behind our transparent canvas, so we fake glass this way.
+// ---------------------------------------------------------------------------
 const glassVertexShader = /* glsl */ `
   varying vec3 vNormal;
   varying vec3 vViewDir;
@@ -47,132 +68,230 @@ const glassVertexShader = /* glsl */ `
   }
 `;
 
-// Runs once per pixel: decides color and transparency.
 const glassFragmentShader = /* glsl */ `
   uniform vec3 uColor;
   varying vec3 vNormal;
   varying vec3 vViewDir;
   void main() {
     vec3 normal = normalize(vNormal);
-    // 0 when facing the camera, 1 at the edges: the fresnel rim.
     float rim = pow(1.0 - max(dot(normal, vViewDir), 0.0), 2.5);
-    // A sharp highlight from an imaginary light at the top-left.
     vec3 lightDir = normalize(vec3(-0.5, 0.7, 1.0));
     float highlight = pow(max(dot(reflect(-lightDir, normal), vViewDir), 0.0), 60.0);
-    // Mostly see-through in the middle, solid at the rim and the highlight.
     float alpha = clamp(0.06 + rim * 0.85 + highlight, 0.0, 1.0);
     gl_FragColor = vec4(uColor + highlight, alpha);
   }
 `;
 
-function GlassMaterial({ color }: { color: string }) {
+function GlassMaterial({ color }: { color: Color }) {
   // Uniforms are the values we send from JavaScript to the shader.
-  // useMemo keeps the same object, so React does not rebuild it every render.
-  const uniforms = useMemo(
-    () => ({ uColor: { value: new Color(color) } }),
-    [color],
-  );
+  const uniforms = useMemo(() => ({ uColor: { value: color } }), [color]);
   return (
     <shaderMaterial
       vertexShader={glassVertexShader}
       fragmentShader={glassFragmentShader}
       uniforms={uniforms}
       transparent
-      depthWrite={false} // see-through objects should not hide each other
+      depthWrite={false}
     />
   );
 }
 
-function PathNodes({ pointer }: { pointer: RefObject<Pointer> }) {
+function CareerRoute({
+  pointer,
+  labels,
+}: {
+  pointer: RefObject<Pointer>;
+  labels: RefObject<(HTMLDivElement | null)[]>;
+}) {
   const group = useRef<Group>(null);
+  const tube = useRef<Mesh>(null);
+  const particles = useRef<Points>(null);
   const nodes = useRef<(Group | null)[]>([]);
-  const goalCore = useRef<Mesh>(null);
-  const spin = useRef(0);
-  const goalColor = useMemo(() => readCssColor("--green-light", "white"), []);
+  const rings = useRef<(Mesh | null)[]>([]);
+  const time = useRef(0);
 
-  // A smooth curve through all node positions, used for the glass tube.
-  const curve = useMemo(
+  // Colors: white at the start, getting more royal blue step by step, and
+  // the goal in green (all from our CSS tokens).
+  const colors = useMemo(() => {
+    const white = new Color("white");
+    const royal = new Color(readCssColor("--royal", "royalblue"));
+    const goal = new Color(readCssColor("--green-light", "lightgreen"));
+    return ROUTE_STEPS.map((_, i) =>
+      i === LAST ? goal : white.clone().lerp(royal, i / (LAST - 1)),
+    );
+  }, []);
+  const particleColor = useMemo(
     () =>
-      new CatmullRomCurve3(HERO_NODES.map(([x, y, z]) => new Vector3(x, y, z))),
+      new Color("white").lerp(
+        new Color(readCssColor("--royal", "royalblue")),
+        0.25,
+      ),
     [],
   );
 
-  // Runs every frame (about 60 times per second). Never call setState here;
-  // we change the three.js objects directly, which is cheap.
+  // A smooth curve through the 5 steps (used by the tube and the particles).
+  const curve = useMemo(
+    () =>
+      new CatmullRomCurve3(
+        ROUTE_STEPS.map(({ position: [x, y, z] }) => new Vector3(x, y, z)),
+      ),
+    [],
+  );
+  const glow = useMemo(() => makeGlowTexture(), []);
+  const particlePositions = useMemo(
+    () => new Float32Array(PARTICLE_COUNT * 3),
+    [],
+  );
+
+  // three.js does not free GPU memory by itself.
+  useEffect(() => () => glow.dispose(), [glow]);
+
   useFrame((state, delta) => {
-    const g = group.current;
-    if (!g) return;
-    const p = pointer.current;
-    const t = state.clock.elapsedTime;
+    // Our own clock. min() stops a big jump after the animation was paused.
+    const dt = Math.min(delta, 0.1);
+    time.current += dt;
+    const t = time.current;
 
-    // 1. Slow continuous spin around the vertical axis (one turn ~50s).
-    spin.current += delta * 0.12;
+    // 1. Intro: draw the tube from start to goal (ease-out).
+    const intro = MathUtils.clamp((t - INTRO_DELAY) / INTRO_DURATION, 0, 1);
+    const drawn = 1 - Math.pow(1 - intro, 3);
+    const tubeMesh = tube.current;
+    if (tubeMesh) {
+      const total = tubeMesh.geometry.index?.count ?? 0;
+      // Draw ranges must be whole triangles (multiples of 3 indices).
+      tubeMesh.geometry.setDrawRange(0, Math.floor((total * drawn) / 6) * 6);
+    }
 
-    // 2. Mouse follow on top of the spin. damp() eases toward the target, so
-    //    it glides instead of jumping. 4 = how fast it catches up.
-    g.rotation.y = MathUtils.damp(
-      g.rotation.y,
-      spin.current + p.x * 0.6,
-      4,
-      delta,
-    );
-    g.rotation.x = MathUtils.damp(g.rotation.x, p.y * 0.4, 4, delta);
-    // 3. Parallax: the whole path also slides a little toward the mouse.
-    g.position.x = MathUtils.damp(g.position.x, p.x * 0.3, 4, delta);
-    g.position.y = MathUtils.damp(g.position.y, -p.y * 0.2, 4, delta);
+    // 2. Nodes pop in as the line reaches them, float, and spin their rings.
+    ROUTE_STEPS.forEach((step, i) => {
+      const node = nodes.current[i];
+      if (!node) return;
+      const appear = MathUtils.clamp(
+        (drawn * 1.15 - i / ROUTE_STEPS.length) * 4,
+        0,
+        1,
+      );
+      const pulse = i === LAST && drawn >= 1 ? 1 + Math.sin(t * 2.4) * 0.06 : 1;
+      node.scale.setScalar(
+        Math.max(0.001, 1 - Math.pow(1 - appear, 3)) * pulse,
+      );
+      node.position.y = step.position[1] + Math.sin(t * 1.1 + i * 1.3) * 0.04;
 
-    // 4. Each node bobs on its own rhythm (offset by its index), so the
-    //    path feels alive instead of moving as one stiff block.
-    nodes.current.forEach((node, i) => {
-      if (node)
-        node.position.y = HERO_NODES[i][1] + Math.sin(t * 1.2 + i) * 0.04;
+      const ring = rings.current[i];
+      if (ring) {
+        ring.rotation.x = Math.PI / 2 + Math.sin(t * 0.6 + i) * 0.4;
+        ring.rotation.y = t * 0.5 + i;
+      }
+
+      // Show the label once its node is fully there.
+      const label = labels.current[i];
+      if (label) label.style.opacity = appear > 0.9 ? "1" : "0";
     });
 
-    // 5. The goal's light gently pulses.
-    goalCore.current?.scale.setScalar(1 + Math.sin(t * 2) * 0.15);
+    // 3. Light particles travel along the route toward the goal.
+    const pts = particles.current;
+    if (pts) {
+      pts.visible = drawn >= 1;
+      if (pts.visible) {
+        const position = pts.geometry.attributes.position;
+        for (let k = 0; k < PARTICLE_COUNT; k++) {
+          curve.getPointAt((k / PARTICLE_COUNT + t * 0.09) % 1, temp);
+          position.setXYZ(k, temp.x, temp.y, temp.z);
+        }
+        position.needsUpdate = true;
+      }
+    }
+
+    // 4. Tilt toward the mouse with damping, plus a gentle float.
+    const g = group.current;
+    if (g) {
+      const p = pointer.current;
+      g.rotation.y = MathUtils.damp(g.rotation.y, p.x * 0.5, 4, dt);
+      g.rotation.x = MathUtils.damp(g.rotation.x, p.y * 0.3, 4, dt);
+      g.position.y = Math.sin(t * 0.5) * 0.06;
+    }
+
+    // 5. Move each HTML label to its node's position on screen.
+    //    project() turns a 3D point into -1..1 screen coordinates.
+    ROUTE_STEPS.forEach((step, i) => {
+      const node = nodes.current[i];
+      const label = labels.current[i];
+      if (!node || !label) return;
+      node.getWorldPosition(temp);
+      temp.x += step.labelOffset[0];
+      temp.y += step.labelOffset[1];
+      temp.project(state.camera);
+      const x = (temp.x * 0.5 + 0.5) * state.size.width;
+      const y = (-temp.y * 0.5 + 0.5) * state.size.height;
+      label.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    });
   });
 
   return (
     <group ref={group}>
-      {/* Glass tube along the path (instead of a 1px line) */}
-      <mesh>
-        <tubeGeometry args={[curve, 160, 0.03, 16, false]} />
-        <GlassMaterial color="white" />
+      {/* Glass tube along the route; its draw range grows during the intro */}
+      <mesh ref={tube}>
+        <tubeGeometry args={[curve, 200, 0.03, 12, false]} />
+        <GlassMaterial color={colors[1]} />
       </mesh>
 
-      {HERO_NODES.map((position, i) => {
-        const isGoal = i === HERO_NODES.length - 1;
-        const radius = isGoal ? 0.22 : 0.14;
-        const color = isGoal ? goalColor : "white";
-        return (
-          <group
-            key={i}
-            position={position}
+      {ROUTE_STEPS.map((step, i) => (
+        <group
+          key={step.label}
+          position={step.position}
+          scale={0.001}
+          ref={(el) => {
+            nodes.current[i] = el;
+          }}
+        >
+          {/* Glass orb */}
+          <mesh>
+            <sphereGeometry args={[step.radius, 48, 48]} />
+            <GlassMaterial color={colors[i]} />
+          </mesh>
+          {/* Glowing core */}
+          <mesh>
+            <sphereGeometry args={[step.radius * 0.38, 24, 24]} />
+            <meshBasicMaterial color={colors[i]} />
+          </mesh>
+          {/* Thin ring around the node */}
+          <mesh
             ref={(el) => {
-              nodes.current[i] = el;
+              rings.current[i] = el;
             }}
           >
-            {/* Outer glass orb */}
-            <mesh>
-              <sphereGeometry args={[radius, 48, 48]} />
-              <GlassMaterial color={color} />
-            </mesh>
-            {/* Small glowing core inside, so each orb reads clearly on video */}
-            <mesh ref={isGoal ? goalCore : undefined}>
-              <sphereGeometry args={[radius * 0.32, 24, 24]} />
-              <meshBasicMaterial color={color} />
-            </mesh>
-          </group>
-        );
-      })}
+            <torusGeometry args={[step.radius * 1.55, 0.012, 8, 64]} />
+            <meshBasicMaterial color={colors[i]} transparent opacity={0.3} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Light particles (positions are filled in every frame) */}
+      <points ref={particles} visible={false}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[particlePositions, 3]}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.14}
+          map={glow}
+          color={particleColor}
+          transparent
+          depthWrite={false}
+          blending={AdditiveBlending}
+        />
+      </points>
     </group>
   );
 }
 
 // Default export so it can be lazy loaded with next/dynamic.
-export default function HeroScene() {
+export default function HeroScene({ paused }: { paused: boolean }) {
   const wrapper = useRef<HTMLDivElement>(null);
   const pointer = useRef<Pointer>({ x: 0, y: 0 });
+  const labels = useRef<(HTMLDivElement | null)[]>([]);
   const [onScreen, setOnScreen] = useState(true);
   const [ready, setReady] = useState(false);
 
@@ -202,19 +321,49 @@ export default function HeroScene() {
   return (
     <div
       ref={wrapper}
-      className={`size-full transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}
+      className={`relative size-full transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}
     >
       <Canvas
-        frameloop={onScreen ? "always" : "never"}
-        dpr={[1, 1.5]} // cap pixel density: sharp enough, much cheaper on 4K screens
-        // Camera a bit further back, so tilting nodes never touch the edges
+        // "never" = no new frames: used when paused or scrolled away.
+        frameloop={paused || !onScreen ? "never" : "always"}
+        dpr={[1, 1.5]}
         camera={{ position: [0, 0, 7.5], fov: 45 }}
         gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
-        fallback={<HeroNodesSvg />} // shown if the browser has no WebGL
-        onCreated={() => setReady(true)} // fade in once the first frame is ready
+        fallback={<HeroNodesSvg />}
+        onCreated={() => setReady(true)}
       >
-        <PathNodes pointer={pointer} />
+        <CareerRoute pointer={pointer} labels={labels} />
       </Canvas>
+
+      {/* HTML labels on top of the canvas. useFrame moves them every frame to
+          follow their node; they fade in when their node appears. */}
+      {ROUTE_STEPS.map((step, i) => {
+        const isGoal = i === LAST;
+        return (
+          <div
+            key={step.label}
+            ref={(el) => {
+              labels.current[i] = el;
+            }}
+            className={`absolute top-0 left-0 flex items-center gap-2 rounded-full py-1.5 pr-3.5 pl-1.5 text-sm font-semibold whitespace-nowrap opacity-0 shadow-lg shadow-ink/30 transition-opacity duration-500 ${
+              isGoal ? "bg-green text-white" : "bg-white/95 text-ink"
+            }`}
+          >
+            <span
+              className={`grid size-6 place-items-center rounded-full text-[11px] font-bold ${
+                isGoal ? "bg-white text-green" : "bg-royal/10 text-royal"
+              }`}
+            >
+              {isGoal ? (
+                <Flag aria-hidden="true" className="size-3.5" />
+              ) : (
+                String(i + 1).padStart(2, "0")
+              )}
+            </span>
+            {step.label}
+          </div>
+        );
+      })}
     </div>
   );
 }

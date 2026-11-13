@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
+import { Pause, Play } from "lucide-react";
 import { HeroNodesSvg } from "@/components/home/hero-nodes-svg";
 
 // Lazy load: three.js is big, so its code is split into a separate file that
@@ -48,17 +49,44 @@ export function HeroNodes() {
     () => false,
   );
 
+  // Lives here (not inside HeroScene) so the button can be outside the
+  // click-through 3D layer.
+  const [paused, setPaused] = useState(false);
+
   // Phones and tablets: the text uses the full width, so no nodes at all.
   if (!isLargeScreen) return null;
 
+  const show3D = !reduceMotion && strongDevice;
+
   return (
-    <div
-      aria-hidden="true"
-      // pointer-events-none: the nodes are decoration and never block clicks.
-      // -z-5 puts them above the navy overlay but below the text.
-      className="pointer-events-none absolute inset-y-0 right-0 -z-5 w-[45%]"
-    >
-      {reduceMotion || !strongDevice ? <HeroNodesSvg /> : <HeroScene />}
-    </div>
+    <>
+      <div
+        aria-hidden="true"
+        // pointer-events-none: the route is decoration and never blocks clicks.
+        // -z-5 puts it above the navy overlay but below the text.
+        className="pointer-events-none absolute inset-y-0 right-0 -z-5 w-[45%]"
+      >
+        {show3D ? <HeroScene paused={paused} /> : <HeroNodesSvg />}
+      </div>
+
+      {/* WCAG 2.2.2: motion that lasts more than 5 seconds needs a pause.
+          The static SVG does not move, so it needs no button.
+          z-10 keeps the button above the text layer so it can be clicked. */}
+      {show3D && (
+        <button
+          type="button"
+          onClick={() => setPaused((p) => !p)}
+          aria-pressed={paused}
+          aria-label="Pause animation"
+          className="absolute right-6 bottom-6 z-10 inline-flex size-11 items-center justify-center rounded-full border border-white/40 bg-ink/60 text-white transition-colors duration-200 hover:bg-ink/80"
+        >
+          {paused ? (
+            <Play aria-hidden="true" className="size-5" />
+          ) : (
+            <Pause aria-hidden="true" className="size-5" />
+          )}
+        </button>
+      )}
+    </>
   );
 }

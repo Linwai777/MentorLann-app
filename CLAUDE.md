@@ -17,7 +17,7 @@ Lin Wai wants Claude to write the code, and to explain it step by step so they c
 - Do not jump to the next feature until Lin Wai confirms. Suggest a commit message after each finished unit.
 - `docs/DEVELOPMENT_PROGRESS.md` may only be created or updated after approval.
 
-Built so far: design tokens in `app/globals.css`, fonts and metadata in `app/layout.tsx`, the sticky Header (`components/site/header.tsx`, shadcn Sheet for mobile) and the navy Footer (`components/site/footer.tsx`); both are rendered from the root layout and share one link list in `components/site/nav-links.ts`. `next.config.ts` has `cacheComponents: true`, so values like `new Date()` in Server Components need `"use cache"` (see the Footer's copyright year) or `await io()` inside `<Suspense>`. `app/page.tsx` is a temporary placeholder until the Homepage/Hero is built. shadcn/ui is set up (`components.json`, `components/ui/`); hero video files live in `public/media/`.
+Built so far: design tokens in `app/globals.css`, fonts and metadata in `app/layout.tsx`, the sticky Header (`components/site/header.tsx`, shadcn Sheet for mobile) and the navy Footer (`components/site/footer.tsx`); both are rendered from the root layout and share one link list in `components/site/nav-links.ts`. `next.config.ts` has `cacheComponents: true`, so values like `new Date()` in Server Components need `"use cache"` (see the Footer's copyright year) or `await io()` inside `<Suspense>`. The Homepage (`app/page.tsx`) currently has the cinematic Hero (`components/home/hero*.tsx`): blurred photo background (`public/media/hero-desk.jpg`), GSAP entrance (`hero-reveal.tsx`, no-flash CSS guard in `globals.css`) and lazy-loaded React Three Fiber path nodes (`hero-nodes.tsx` decides 3D vs SVG vs nothing). Libraries added so far: shadcn/ui, gsap, three, @react-three/fiber. shadcn/ui is set up (`components.json`, `components/ui/`); the hero background photo lives in `public/media/` and the logos in `public/brand/`.
 
 ## Design source of truth
 
@@ -47,6 +47,7 @@ This is Next.js 16.x with breaking changes from older versions. Before writing f
 - Path alias `@/*` maps to the repo root (not `src/`).
 - Styling: Tailwind v4 via `@import "tailwindcss"` and `@theme inline` in `app/globals.css`. Design tokens belong there as CSS variables; never hardcode hex values in components.
 - Fonts load through `next/font/google` in `app/layout.tsx`.
+- Known dev quirk (project lives in OneDrive): the Turbopack dev server sometimes does not pick up edits to `app/globals.css` (it keeps serving the old CSS; `.tsx` edits are fine). If a CSS change seems missing, fetch the served CSS to confirm, then restart `npm run dev`.
 
 ## Rules for working here
 

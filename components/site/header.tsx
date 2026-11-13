@@ -45,8 +45,15 @@ export function Header() {
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur-sm supports-[backdrop-filter]:bg-white/85">
-        <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6 md:h-20">
+      {/* Floating glass bar.
+          - The outer <header> is a see-through strip: pointer-events-none so
+            its empty margins never block clicks on the page under it.
+          - -mb-19 / md:-mb-20 (= its own height) pulls the page up under the
+            header, so the hero photo shows through the glass at the top.
+          - The inner bar is the "glass": 70% white + backdrop blur. 70% keeps
+            navy text at 8.4:1 even over the darkest part of the hero. */}
+      <header className="pointer-events-none sticky top-0 z-40 -mb-19 px-3 pt-3 sm:px-4 md:-mb-20 md:pt-4">
+        <div className="pointer-events-auto mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 rounded-2xl border border-white/60 bg-white/70 px-3 shadow-lg shadow-ink/15 backdrop-blur-xl backdrop-saturate-150 sm:px-5 [@media(prefers-reduced-transparency:reduce)]:bg-white">
           <Wordmark />
 
           {/* Desktop navigation */}
@@ -56,7 +63,8 @@ export function Header() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="inline-flex min-h-11 items-center rounded-md px-3 text-[15px] font-medium text-ink-soft transition-colors duration-200 hover:text-ink"
+                    // Navy (not grey) text: grey drops to 4:1 on the glass.
+                    className="inline-flex min-h-11 items-center rounded-lg px-3 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-white/60 hover:text-royal-deep"
                   >
                     {link.label}
                   </Link>
@@ -82,9 +90,14 @@ export function Header() {
                   <Menu aria-hidden="true" className="size-5" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[min(88vw,22rem)] gap-0 p-0">
+              <SheetContent
+                side="right"
+                className="w-[min(88vw,22rem)] gap-0 p-0"
+              >
                 <div className="border-b border-line p-4 pr-16">
-                  <SheetTitle className="font-display text-xl font-semibold">Menu</SheetTitle>
+                  <SheetTitle className="font-display text-xl font-semibold">
+                    Menu
+                  </SheetTitle>
                   <SheetDescription className="sr-only">
                     Site navigation
                   </SheetDescription>

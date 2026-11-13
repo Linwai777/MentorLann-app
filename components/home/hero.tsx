@@ -26,7 +26,8 @@ export function Hero() {
       aria-labelledby="hero-title"
       // `isolate` starts a new stacking context, so the negative z-index layers
       // below stay inside this section instead of going behind the page.
-      className="relative isolate flex min-h-[calc(100svh-4rem)] items-end overflow-hidden bg-ink text-white md:min-h-[calc(100svh-5rem)] md:items-center"
+      // min-h-svh: the hero now starts at the very top, under the glass header.
+      className="relative isolate flex min-h-svh items-end overflow-hidden bg-ink text-white md:items-center"
     >
       {/* Layer 1 (back): background photo, the Largest Contentful Paint element.
           A soft blur + less saturation (like the preview) keeps it calm, so the
@@ -59,7 +60,7 @@ export function Hero() {
         className="absolute inset-0 -z-10 bg-ink opacity-0"
       />
 
-      {/* Layer 3.5: 3D path nodes on large screens (lazy loaded) */}
+      {/* Layer 3.5: 3D career route on large screens (lazy loaded) */}
       <HeroNodes />
 
       {/* Layer 4 (front): content. `data-hero-reveal` marks what animates in. */}
@@ -92,7 +93,7 @@ export function Hero() {
           className="mt-6 max-w-xl text-lg text-white/85 md:text-xl"
         >
           Free resources, career roadmaps and mentors who have walked the path.
-          Made for learners in Myanmar and beyond.
+          Made for learners from Myanmar and beyond.
         </p>
         <div data-hero-reveal className="mt-10 flex flex-col gap-3 sm:flex-row">
           {/* Primary: royal, like the brand. White text on royal is 6.7:1.
@@ -132,6 +133,13 @@ export function Hero() {
             </li>
           ))}
         </ul>
+
+        {/* The 3D route is hidden from screen readers (aria-hidden), so say
+            what it shows in words. sr-only = invisible but still read aloud. */}
+        <p className="sr-only">
+          The 5 steps of a MentorLann career path: Start, Learn, Practice,
+          Mentor, Career.
+        </p>
       </div>
 
       {/* Scroll cue (desktop only): a small mouse whose wheel moves down.

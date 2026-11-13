@@ -22,7 +22,7 @@ All ages. Primary community: the Myanmar community in Dubai (fast mobile and hom
 1. Header + navigation
 2. Cinematic hero: full-viewport blurred photo background with navy overlay, entrance sequence, headline, short promise, two CTAs, highlights, interactive 3D career route on desktop (mouse reactive, lazy loaded, static fallback), pause control for the 3D motion (see DESIGN.md section 7)
 3. Career paths (built, `#paths`): 6 tracks for the community: Web Development, UI/UX Design, Data Analysis, Digital Marketing, Accounting & Finance (incl. UAE VAT basics), Graphic Design
-4. How it works: 3 steps (Choose a path, Learn with others, Show your progress)
+4. How it works (built, `#how`): 5 steps that match the hero ("5 steps to your career" and the 3D route): Start your path, Learn with others, Practice and see your progress, Meet your mentors, Reach your career goal
 5. Community: learner stories and activity snapshot
 6. Knowledge-sharing vlogs (`#vlogs`, in the navigation): short videos where learners and mentors share what they know (featured vlogs, topic, speaker, length)
 7. Courses preview: 3 featured courses with progress style

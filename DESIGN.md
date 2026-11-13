@@ -27,6 +27,7 @@ Dials: variance 6 (asymmetric but calm) · motion 5 · density 5.
 | --color-green | #15803D | Green accent: progress, success, community, mentors (5.0:1 on white) |
 | --color-green-soft | #DCFCE7 | Light green badge background (green text on it: 4.6:1) |
 | --color-green-light | #4ADE80 | Green on dark navy sections only (9.2:1 on ink) |
+| --color-glass-tint | #B6E5E8 | Soft aqua tint of the glass cards; ink 11.7:1, ink-soft 5.5:1, royal-deep 6.4:1 on it |
 | --color-destructive | #DC2626 | Errors |
 | --color-ring | #1D4ED8 | Focus ring (2px, offset 2px; on navy sections use white) |
 
@@ -48,7 +49,8 @@ All pairs above were calculated with the WCAG formula (script run, not eyeballed
 
 ## 5. Components
 - **Button**: 48px high, 8px radius. Primary = royal fill + white text (hover royal-deep). Secondary = 1px ink border, transparent. Hover: translateY(-1px) + shadow, 200ms. Loading and disabled states.
-- **Path card** (career track): white surface, 1px line border, track icon (Lucide, 24px), title, 3 skill chips, duration, "View path" link. Hover lifts with motion; whole card is one link.
+- **Path card (glass)** (built in `components/home/career-paths.tsx`, data in `career-paths-data.ts`): aqua glass card on a plain white section (no background color shapes). Card: `bg-glass-tint/80`, 1px `white/80` border plus a white inner top shadow (the bright glass edges), 16px radius, soft ink shadow, and 3 reflection layers under the text: a top-left shine, a 115deg light band, a 1px bright top edge. No backdrop blur (nothing behind it to blur). Content: icon in a `white/55` square (Lucide, 24px, royal), "Beginner friendly" badge (green on green-soft), Poppins title, one `ink-soft` sentence, exactly 3 white glass skill chips. No duration. Until `/paths/<slug>` exists the card is NOT a link and ends with "Roadmap coming soon"; then the whole card becomes one link with the hover lift below.
+- **Locked path card**: same glass shell, with the content blurred (`blur-[6px]`, `aria-hidden` + `inert`, so screen readers and keyboard skip it) under a centered overlay: a 64px white glass circle with a Lucide `Lock` (navy) and the line "We will unlock this career path later." (Poppins 600, navy). A screen-reader-only h3 says "<Title> (locked)". Order: the 3 open paths first (Web Development, Graphic Design, Accounting & Finance), then the locked ones (UI/UX Design, Digital Marketing, Data Analysis). Set `locked: true` in `career-paths-data.ts` to lock a path.
 - **Step item**: large Poppins number, title, one sentence.
 - **Story card** (community): quote, name, role, small avatar (initials fallback), green accent bar.
 - **Course preview**: 16:9 reserved thumbnail, level pill, lesson count, progress bar (green on line track, 8px, numeric label).
@@ -81,7 +83,8 @@ A small, consistent set. Each has a purpose, none loops forever.
 - **Route progress**: the dashed route line draws itself (stroke-dashoffset) as the page scrolls; nodes fill with `royal` when reached.
 - **Animated counters**: only for real numbers (learners, mentors) once they exist; never invented placeholder stats. Count up once when visible; show the final number to screen readers.
 - **Marquee of skills/careers**: slow horizontal ticker, pauses on hover and focus, static wrapped list under reduced motion.
-- **Path cards**: lift 4px, icon nudges, arrow slides 4px on hover (motion.dev).
+- **Path cards** (only once they are links): lift 4px, icon nudges, arrow slides 4px on hover. Do not add hover motion to cards that cannot be clicked: it falsely suggests they are links.
+- **Lock shake**: hovering the lock icon shakes it once (rotate -14deg to 12deg and back, 0.5s, pivot near the top like a hanging padlock). Pure CSS class `.lock-shake` in `globals.css`; off under reduced motion.
 - **Text reveal**: headings split by line, each line rises and fades in on scroll.
 - **Progress bars**: fill from 0 to value once visible.
 - **Accordion / tabs / menu** (shadcn): height and content fade via transform/opacity-friendly patterns, 200ms.
@@ -89,7 +92,7 @@ A small, consistent set. Each has a purpose, none loops forever.
 
 ## 9. Motion
 - Hero 3D: a **labeled career route** of 5 steps (Start → Learn → Practice → Mentor → Career, data in `components/home/hero-nodes-data.ts`). Glass style: see-through glass orbs (fresnel shader: clear center, bright rim, sharp highlight) with a glowing core and a thin rotating ring, joined by a glass tube; colors go from white to royal blue, the goal is green and pulses. HTML pill labels follow each node (white pill, numbered; goal green with a flag icon). Motion: the tube draws itself in (~1.8s after a 0.4s delay) and nodes pop in as it reaches them; light particles then flow along the route toward the goal; the route tilts toward the mouse with damping and floats gently. No continuous spin (it made the labels overlap). A Pause/Play button (44px, `aria-pressed`) stops the 3D render loop (WCAG 2.2.2). The 3D layer is `aria-hidden`; an `sr-only` sentence names the 5 steps. Three.js "transmission" glass was tested and rejected: on a transparent canvas over the HTML background it looks milky.
-- Scroll reveals (GSAP ScrollTrigger): children fade + rise 16px, 500–700ms, stagger 80ms, play once. Skip entirely under reduced motion.
+- Scroll reveals (GSAP ScrollTrigger): children fade + rise 16px, 500–700ms, stagger 80ms, play once. Skip entirely under reduced motion. Use the shared wrapper `components/site/reveal-on-scroll.tsx` and mark each item `data-reveal` (items entering together animate as one batch; content stays visible if JavaScript fails).
 - Hover (motion.dev): cards lift 4px, buttons 1px, 150–250ms.
 - Animate `transform` and `opacity` only. Reduced motion = final state, no movement.
 

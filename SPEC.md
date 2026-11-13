@@ -21,7 +21,7 @@ All ages. Primary community: the Myanmar community in Dubai (fast mobile and hom
 ## Sections for the home page (build one at a time, in this order)
 1. Header + navigation
 2. Cinematic hero: full-viewport blurred photo background with navy overlay, entrance sequence, headline, short promise, two CTAs, highlights, interactive 3D career route on desktop (mouse reactive, lazy loaded, static fallback), pause control for the 3D motion (see DESIGN.md section 7)
-3. Career paths: 4–6 featured tracks (cards)
+3. Career paths (built, `#paths`): 6 tracks for the community: Web Development, UI/UX Design, Data Analysis, Digital Marketing, Accounting & Finance (incl. UAE VAT basics), Graphic Design
 4. How it works: 3 steps (Choose a path, Learn with others, Show your progress)
 5. Community: learner stories and activity snapshot
 6. Knowledge-sharing vlogs (`#vlogs`, in the navigation): short videos where learners and mentors share what they know (featured vlogs, topic, speaker, length)

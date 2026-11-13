@@ -15,6 +15,7 @@
   --green: #15803d; /* progress, success, mentors */
   --green-soft: #dcfce7; /* light green badge background */
   --green-light: #4ade80; /* green on dark navy sections only */
+  --glass-tint: #b6e5e8; /* soft aqua: tint of the glass cards (Career paths) */
 
   /* shadcn semantic tokens mapped to the brand */
   --background: #ffffff;
@@ -50,6 +51,7 @@
   --color-green: var(--green);
   --color-green-soft: var(--green-soft);
   --color-green-light: var(--green-light);
+  --color-glass-tint: var(--glass-tint);
 
   /* shadcn semantic colors */
   --color-background: var(--background);
@@ -145,6 +147,37 @@
   100% {
     opacity: 0;
     translate: 0 10px;
+  }
+}
+
+/* Locked career path: when the pointer is on the lock, the lock icon shakes
+   once (0.5s), like someone tried to open it. Feedback that says "locked".
+   Uses `rotate` only (a transform); the pivot is near the top, like a
+   padlock hanging from its shackle. Off under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .lock-shake:hover > svg {
+    animation: lock-shake 0.5s ease-in-out;
+  }
+}
+.lock-shake > svg {
+  transform-origin: 50% 20%;
+}
+@keyframes lock-shake {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  20% {
+    rotate: -14deg;
+  }
+  40% {
+    rotate: 12deg;
+  }
+  60% {
+    rotate: -8deg;
+  }
+  80% {
+    rotate: 5deg;
   }
 }
 

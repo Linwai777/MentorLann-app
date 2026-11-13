@@ -22,7 +22,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "MentorLann | Learn, belong, grow",
+  // default: the home page's title.
+  // template: inner pages set only their own name ("Courses") and Next.js
+  // adds the brand: "Courses | MentorLann".
+  title: {
+    default: "MentorLann | Learn, belong, grow",
+    template: "%s | MentorLann",
+  },
   description:
     "MentorLann is a learning community where people of every age choose a career path, learn with others and show their progress.",
 };
@@ -39,7 +45,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
-
       </body>
     </html>
   );

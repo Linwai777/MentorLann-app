@@ -23,14 +23,20 @@ All ages. Primary community: the Myanmar community in Dubai (fast mobile and hom
 2. Cinematic hero: full-viewport blurred photo background with navy overlay, entrance sequence, headline, short promise, two CTAs, highlights, interactive 3D career route on desktop (mouse reactive, lazy loaded, static fallback), pause control for the 3D motion (see DESIGN.md section 7)
 3. Career paths (built, `#paths`): 6 tracks for the community: Web Development, UI/UX Design, Data Analysis, Digital Marketing, Accounting & Finance (incl. UAE VAT basics), Graphic Design
 4. How it works (built, `#how`): 5 steps that match the hero ("5 steps to your career" and the 3D route): Start your path, Learn with others, Practice and see your progress, Meet your mentors, Reach your career goal
-5. Community: learner stories and activity snapshot
-6. Knowledge-sharing vlogs (`#vlogs`, in the navigation): short videos where learners and mentors share what they know (featured vlogs, topic, speaker, length)
-7. Courses preview: 3 featured courses with progress style
+5. Community preview: a short teaser that links to `/community` (no invented stories or member counts)
+6. Knowledge-sharing vlogs preview: a short teaser that links to `/vlogs`
+7. Courses preview: 3 featured free courses that link to `/courses` (no progress bars until login exists)
 8. Final call to action
 9. Footer
 
-## Later pages (after the home page)
-Courses, course detail, lesson, community, vlogs (list + single vlog), sign up / log in, dashboard.
+## Own pages (decided 2026-11-14; build in this order)
+1. Shared pieces (done): `PageHeader` (label + h1 + intro), honest `ComingSoon` block, nav links `/community`, `/vlogs`, `/courses`, title template "<Page> | MentorLann". Starter pages exist at all three URLs.
+2. `/courses`: a curated list of FREE courses from trusted providers (freeCodeCamp, Google, Microsoft Learn, ...), grouped by career path. MentorLann does not make its own courses for now. Data in a file shaped like future database rows. No progress bars before login.
+3. `/vlogs`: YouTube videos shown with a click-to-load facade (thumbnail first, player only on click). The channel is new: show the ComingSoon block until real videos exist.
+4. `/community`: the community is just starting (no members yet). Show how to join (Facebook page, later groups), planned study groups and Dubai meetups; never invented members, stories or counts.
+5. Home preview sections for Community, Vlogs and Courses, linking to the pages.
+
+Later: course detail, lesson, single vlog, sign up / log in, dashboard (Phase 2).
 
 ## Animated components (see DESIGN.md section 8)
 Route progress line, animated counters, skills marquee, hover-lift path cards, line-by-line text reveals, progress bar fills, shadcn accordion/tabs/menu, magnetic hero CTA.

@@ -57,7 +57,8 @@ export function Header() {
           <Wordmark />
 
           {/* Desktop navigation */}
-          <nav aria-label="Main" className="hidden md:block">
+          {/* Full link row only from 1024px: with 5 links, tablets would wrap */}
+          <nav aria-label="Main" className="hidden lg:block">
             <ul className="flex items-center gap-1">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
@@ -84,7 +85,7 @@ export function Header() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="md:hidden"
+                  className="lg:hidden"
                   aria-label="Open menu"
                 >
                   <Menu aria-hidden="true" className="size-5" />

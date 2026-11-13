@@ -24,12 +24,13 @@ All ages. Primary community: the Myanmar community in Dubai (fast mobile and hom
 3. Career paths: 4–6 featured tracks (cards)
 4. How it works: 3 steps (Choose a path, Learn with others, Show your progress)
 5. Community: learner stories and activity snapshot
-6. Courses preview: 3 featured courses with progress style
-7. Final call to action
-8. Footer
+6. Knowledge-sharing vlogs (`#vlogs`, in the navigation): short videos where learners and mentors share what they know (featured vlogs, topic, speaker, length)
+7. Courses preview: 3 featured courses with progress style
+8. Final call to action
+9. Footer
 
 ## Later pages (after the home page)
-Courses, course detail, lesson, community, sign up / log in, dashboard.
+Courses, course detail, lesson, community, vlogs (list + single vlog), sign up / log in, dashboard.
 
 ## Animated components (see DESIGN.md section 8)
 Route progress line, animated counters, skills marquee, hover-lift path cards, line-by-line text reveals, progress bar fills, shadcn accordion/tabs/menu, magnetic hero CTA.

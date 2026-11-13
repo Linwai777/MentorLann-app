@@ -10,5 +10,8 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Career paths", href: "/#paths" },
   { label: "How it works", href: "/#how" },
   { label: "Community", href: "/#community" },
+  // Knowledge-sharing vlogs: short videos where learners and mentors share
+  // what they know. Placed next to Community because members make them.
+  { label: "Vlogs", href: "/#vlogs" },
   { label: "Courses", href: "/#courses" },
 ];

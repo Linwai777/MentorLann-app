@@ -71,10 +71,10 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Fonts: Calistoga for display, Inter for text/UI (DESIGN.md section 3) */
+  /* Fonts: Poppins for display/headings, Inter for text/UI (DESIGN.md section 3) */
   --font-sans: var(--font-inter);
-  --font-display: var(--font-calistoga);
-  --font-heading: var(--font-calistoga);
+  --font-display: var(--font-poppins);
+  --font-heading: var(--font-poppins);
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -125,6 +125,26 @@
 @keyframes hero-failsafe-hide {
   to {
     opacity: 0;
+  }
+}
+
+/* Hero scroll cue: the mouse wheel slides down and fades, 3 times (4.8s),
+   then stops. Uses `translate` (not `transform`) so it does not overwrite
+   the -translate-x-1/2 that centers the wheel. */
+.scroll-cue-wheel {
+  animation: scroll-cue 1.6s ease-in-out 3;
+}
+@keyframes scroll-cue {
+  0% {
+    opacity: 0;
+    translate: 0 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    translate: 0 10px;
   }
 }
 

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,21 +12,24 @@ import {
 } from "@/components/ui/sheet";
 import { NAV_LINKS } from "@/components/site/nav-links";
 
-// The wordmark: one "node" dot (the signature of the Atlas design) + the name.
+// The brand logo (from the MentorLann brand kit). It is an outlined SVG, so it
+// looks sharp at any size and needs no font. width/height are the file's real
+// size (764x160); they reserve the right space so nothing jumps while loading.
+// The visible size comes from the height class; `w-auto` keeps the ratio.
 function Wordmark() {
   return (
     <Link
       href="/"
-      className="inline-flex min-h-11 items-center gap-2.5 rounded-md"
+      className="inline-flex min-h-11 items-center rounded-md"
       aria-label="MentorLann, home"
     >
-      <span
-        aria-hidden="true"
-        className="size-3 rounded-full bg-royal ring-4 ring-royal/20"
+      <Image
+        src="/brand/logo.svg"
+        alt="" // the link's aria-label already names it
+        width={764}
+        height={160}
+        className="h-9 w-auto md:h-11"
       />
-      <span className="font-display text-xl leading-none tracking-tight text-ink">
-        MentorLann
-      </span>
     </Link>
   );
 }
@@ -80,7 +84,7 @@ export function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="w-[min(88vw,22rem)] gap-0 p-0">
                 <div className="border-b border-line p-4 pr-16">
-                  <SheetTitle className="font-display text-xl">Menu</SheetTitle>
+                  <SheetTitle className="font-display text-xl font-semibold">Menu</SheetTitle>
                   <SheetDescription className="sr-only">
                     Site navigation
                   </SheetDescription>

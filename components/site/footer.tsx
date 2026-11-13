@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { Button } from "@/components/ui/button";
@@ -22,17 +23,18 @@ export function Footer() {
           <Link
             href="/"
             aria-label="MentorLann, home"
-            className="inline-flex min-h-11 items-center gap-2.5 rounded-md"
+            className="inline-flex min-h-11 items-center rounded-md"
           >
-            <span
-              aria-hidden="true"
-              className="size-3 rounded-full bg-green-light"
+            {/* White version of the logo for the navy background */}
+            <Image
+              src="/brand/logo-white.svg"
+              alt="" // the link's aria-label already names it
+              width={764}
+              height={160}
+              className="h-11 w-auto"
             />
-            <span className="font-display text-xl leading-none">
-              MentorLann
-            </span>
           </Link>
-          <p className="mt-4 font-display text-xl leading-tight text-balance sm:text-2xl">
+          <p className="mt-4 font-display text-xl leading-tight font-semibold text-balance sm:text-2xl">
             Learn Together. Grow Together.
           </p>
           <p className="mt-3 max-w-md text-white/75">

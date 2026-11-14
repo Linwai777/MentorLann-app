@@ -23,9 +23,9 @@ All ages. Primary community: the Myanmar community in Dubai (fast mobile and hom
 2. Cinematic hero: full-viewport blurred photo background with navy overlay, entrance sequence, headline, short promise, two CTAs, highlights, interactive 3D career route on desktop (mouse reactive, lazy loaded, static fallback), pause control for the 3D motion (see DESIGN.md section 7)
 3. Career paths (built, `#paths`): 6 tracks for the community: Web Development, UI/UX Design, Data Analysis, Digital Marketing, Accounting & Finance (incl. UAE VAT basics), Graphic Design
 4. How it works (built, `#how`): 5 steps that match the hero ("5 steps to your career" and the 3D route): Start your path, Learn with others, Practice and see your progress, Meet your mentors, Reach your career goal
-5. Community preview: a short teaser that links to `/community` (no invented stories or member counts)
-6. Knowledge-sharing vlogs preview: a short teaser that links to `/vlogs`
-7. Courses preview: 3 featured free courses that link to `/courses` (no progress bars until login exists)
+5. Community preview (built, `#community`): the 4 planned activities as compact glass cards marked "Planned" + "Visit the community" link
+6. Knowledge-sharing vlogs preview (built, `#vlogs`): the 3 newest vlogs (same VlogCard as `/vlogs`) + "See all vlogs"; the section hides itself if there are no vlogs
+7. Courses preview (built, `#courses`): Step 1 of each open career path (same CourseCard as `/courses`, path name above each) + "Browse all free courses"; no progress bars until login exists
 8. Final call to action
 9. Footer
 
@@ -34,7 +34,7 @@ All ages. Primary community: the Myanmar community in Dubai (fast mobile and hom
 2. `/courses` (built): a curated list of FREE courses from trusted providers (freeCodeCamp, Google, Microsoft Learn, ...), grouped by career path. MentorLann does not make its own courses for now. Data in a file shaped like future database rows. No progress bars before login. Now: 4 courses each for Web Development, Graphic Design and Accounting & Finance (12 links, all checked in a real browser on 2026-11-14); locked paths get courses when they unlock.
 3. `/vlogs` (built): cards with a picture, title and summary. Two kinds: **text vlogs** (pictures + text) open in full on our site at `/vlogs/<slug>`; **video vlogs** show YouTube and Facebook icons that open the full video there. The YouTube channel and Facebook page are new, so the first two vlogs are real text guides by the MentorLann team ("How to use MentorLann's free courses", "How to choose your first career path"), illustrated with screenshots of the site. Add a video by adding a `kind: "video"` entry with `youtubeUrl` and/or `facebookUrl`.
 4. `/community` (built): the community is just starting (no members yet). Shows planned activities marked "Planned" (study groups, Dubai meetups, mentor chats, show your work), 3 steps to join, 5 community rules and a call for future mentors. Paste the Facebook page address into `COMMUNITY_LINKS.facebook` when it exists; the "Follow MentorLann" button then appears by itself.
-5. Home preview sections for Community, Vlogs and Courses, linking to the pages.
+5. Home preview sections for Community, Vlogs and Courses (done 2026-11-14).
 
 Later: course detail, lesson, single vlog, sign up / log in, dashboard (Phase 2).
 

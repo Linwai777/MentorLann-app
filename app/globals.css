@@ -16,6 +16,9 @@
   --green-soft: #dcfce7; /* light green badge background */
   --green-light: #4ade80; /* green on dark navy sections only */
   --glass-tint: #b6e5e8; /* soft aqua: tint of the glass cards (Career paths) */
+  /* Official brand colors, only for the YouTube / Facebook logos */
+  --youtube: #ff0000;
+  --facebook: #0866ff;
 
   /* shadcn semantic tokens mapped to the brand */
   --background: #ffffff;
@@ -52,6 +55,8 @@
   --color-green-soft: var(--green-soft);
   --color-green-light: var(--green-light);
   --color-glass-tint: var(--glass-tint);
+  --color-youtube: var(--youtube);
+  --color-facebook: var(--facebook);
 
   /* shadcn semantic colors */
   --color-background: var(--background);

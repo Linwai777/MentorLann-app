@@ -68,7 +68,7 @@ function PathCard({ path }: { path: CareerPath }) {
     //   light catches the glass
     // - isolate: the reflection layers (-z-10) stay inside the card, above
     //   its background but under the text
-    <article className="relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-white/80 bg-glass-tint/80 shadow-xl inset-shadow-sm shadow-ink/10 inset-shadow-white/90">
+    <article className="relative isolate flex h-full flex-col overflow-hidden rounded-2xl border border-ink/10 border-t-ink/20 bg-glass-tint/80 shadow-glass inset-shadow-sm inset-shadow-white/90">
       {/* Reflection 1: a soft shine from the top-left corner, like light
           falling on a glass panel */}
       <span

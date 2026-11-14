@@ -43,6 +43,13 @@
 }
 
 @theme inline {
+  /* Glass card shadow, two layers:
+     1. a soft shadow ABOVE the card, so its top edge stays visible on
+        white and soft-blue sections
+     2. the normal soft shadow below the card */
+  --shadow-glass:
+    0 -3px 12px -2px color-mix(in oklab, var(--ink) 14%, transparent),
+    0 14px 30px -10px color-mix(in oklab, var(--ink) 22%, transparent);
   /* Brand colors as Tailwind utilities: bg-royal, text-ink, bg-surface-soft ... */
   --color-surface-soft: var(--surface-soft);
   --color-ink: var(--ink);

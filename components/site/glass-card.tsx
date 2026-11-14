@@ -2,7 +2,8 @@ import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
 // The aqua glass block (DESIGN.md "glass card"), as one reusable piece:
-// tint + bright white edges + 3 light reflections. Any section can use it
+// tint + a thin navy edge (darker on top) + a white inner highlight +
+// shadow-glass (above and below) + 3 light reflections. Any section can use it
 // and only adds its own content and padding.
 // cn() merges class names, so a caller can add classes (e.g. "p-5").
 export function GlassCard({
@@ -15,7 +16,7 @@ export function GlassCard({
       className={cn(
         // isolate: the reflection layers (-z-10) stay inside this card,
         // above its background but under the text.
-        "relative isolate overflow-hidden rounded-2xl border border-white/80 bg-glass-tint/80 shadow-xl inset-shadow-sm shadow-ink/10 inset-shadow-white/90",
+        "relative isolate overflow-hidden rounded-2xl border border-ink/10 border-t-ink/20 bg-glass-tint/80 shadow-glass inset-shadow-sm inset-shadow-white/90",
         className,
       )}
       {...props}

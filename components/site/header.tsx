@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { NAV_LINKS } from "@/components/site/nav-links";
+import { NavLink } from "@/components/site/nav-link";
 
 // The brand logo (from the MentorLann brand kit). It is an outlined SVG, so it
 // looks sharp at any size and needs no font. width/height are the file's real
@@ -53,7 +54,19 @@ export function Header() {
           - The inner bar is the "glass": 70% white + backdrop blur. 70% keeps
             navy text at 8.4:1 even over the darkest part of the hero. */}
       <header className="pointer-events-none sticky top-0 z-40 -mb-19 px-3 pt-3 sm:px-4 md:-mb-20 md:pt-4">
-        <div className="pointer-events-auto mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 rounded-2xl border border-white/60 bg-white/70 px-3 shadow-lg shadow-ink/15 backdrop-blur-xl backdrop-saturate-150 sm:px-5 [@media(prefers-reduced-transparency:reduce)]:bg-white">
+        {/* Upper side, so the bar looks like polished glass:
+            - border-t-white: a bright top edge
+            - inset-shadow-white: a thin light line just inside the top
+            - shadow-glass: the shared glass shadow, which also falls ABOVE
+              the bar (visible in the gap over white pages)
+            - isolate: keeps the gloss layer (-z-10) inside the bar */}
+        <div className="pointer-events-auto relative isolate mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 rounded-2xl border border-white/60 border-t-white bg-white/70 px-3 shadow-glass inset-shadow-sm inset-shadow-white backdrop-blur-xl backdrop-saturate-150 sm:px-5 [@media(prefers-reduced-transparency:reduce)]:bg-white">
+          {/* Gloss: white light on the top half that fades out downwards,
+              like a shine on a glass panel. Decorative only. */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-1/2 rounded-t-2xl bg-linear-to-b from-white/80 to-transparent"
+          />
           <Wordmark />
 
           {/* Desktop navigation */}
@@ -62,13 +75,15 @@ export function Header() {
             <ul className="flex items-center gap-1">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link
+                  <NavLink
                     href={link.href}
                     // Navy (not grey) text: grey drops to 4:1 on the glass.
-                    className="inline-flex min-h-11 items-center rounded-lg px-3 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-white/60 hover:text-royal-deep"
+                    // aria-[current=page]: styles the link of the page you
+                    // are on (white pill + royal text), set by NavLink.
+                    className="inline-flex min-h-11 items-center rounded-lg px-3 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-white/60 hover:text-royal-deep aria-[current=page]:bg-white aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep aria-[current=page]:shadow-sm"
                   >
                     {link.label}
-                  </Link>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -108,12 +123,12 @@ export function Header() {
                     {NAV_LINKS.map((link) => (
                       <li key={link.href} className="border-b border-line">
                         <SheetClose asChild>
-                          <Link
+                          <NavLink
                             href={link.href}
-                            className="flex min-h-14 items-center text-lg font-medium text-ink"
+                            className="flex min-h-14 items-center text-lg font-medium text-ink aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep"
                           >
                             {link.label}
-                          </Link>
+                          </NavLink>
                         </SheetClose>
                       </li>
                     ))}

@@ -57,15 +57,15 @@ export function Header() {
         {/* Upper side, so the bar looks like polished glass:
             - border-t-white: a bright top edge
             - inset-shadow-white: a thin light line just inside the top
-            - shadow-glass: the shared glass shadow, which also falls ABOVE
-              the bar (visible in the gap over white pages)
+            - shadow-nav: like shadow-glass but stronger, with a shadow that
+              also falls ABOVE the bar (visible over white pages)
             - isolate: keeps the gloss layer (-z-10) inside the bar */}
-        <div className="pointer-events-auto relative isolate mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 rounded-2xl border border-white/60 border-t-white bg-white/70 px-3 shadow-glass inset-shadow-sm inset-shadow-white backdrop-blur-xl backdrop-saturate-150 sm:px-5 [@media(prefers-reduced-transparency:reduce)]:bg-white">
+        <div className="pointer-events-auto relative isolate mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-4 rounded-2xl border border-white/60 border-t-white bg-white/70 px-3 shadow-nav inset-shadow-sm inset-shadow-white backdrop-blur-xl backdrop-saturate-150 sm:px-5 [@media(prefers-reduced-transparency:reduce)]:bg-white">
           {/* Gloss: white light on the top half that fades out downwards,
               like a shine on a glass panel. Decorative only. */}
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-1/2 rounded-t-2xl bg-linear-to-b from-white/80 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[60%] rounded-t-2xl bg-linear-to-b from-white from-10% to-transparent"
           />
           <Wordmark />
 
@@ -79,8 +79,10 @@ export function Header() {
                     href={link.href}
                     // Navy (not grey) text: grey drops to 4:1 on the glass.
                     // aria-[current=page]: styles the link of the page you
-                    // are on (white pill + royal text), set by NavLink.
-                    className="inline-flex min-h-11 items-center rounded-lg px-3 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-white/60 hover:text-royal-deep aria-[current=page]:bg-white aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep aria-[current=page]:shadow-sm"
+                    // are on, set by NavLink: a royal-tint pill with a thin
+                    // royal ring, royal text, and a short royal bar under
+                    // the word (the ::after line), so it is easy to spot.
+                    className="inline-flex min-h-11 items-center rounded-lg px-3 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-white/60 hover:text-royal-deep relative aria-[current=page]:bg-royal/10 aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep aria-[current=page]:ring-1 aria-[current=page]:ring-royal/30 aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-1 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-royal"
                   >
                     {link.label}
                   </NavLink>
@@ -125,7 +127,7 @@ export function Header() {
                         <SheetClose asChild>
                           <NavLink
                             href={link.href}
-                            className="flex min-h-14 items-center text-lg font-medium text-ink aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep"
+                            className="flex min-h-14 items-center rounded-lg border-l-4 border-transparent px-3 text-lg font-medium text-ink aria-[current=page]:border-royal aria-[current=page]:bg-royal/10 aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep"
                           >
                             {link.label}
                           </NavLink>

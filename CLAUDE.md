@@ -47,6 +47,7 @@ This is Next.js 16.x with breaking changes from older versions. Before writing f
 - Path alias `@/*` maps to the repo root (not `src/`).
 - Styling: Tailwind v4 via `@import "tailwindcss"` and `@theme inline` in `app/globals.css`. Design tokens belong there as CSS variables; never hardcode hex values in components.
 - Fonts load through `next/font/google` in `app/layout.tsx`.
+- Site address for share links: `lib/site.ts` (`NEXT_PUBLIC_SITE_URL`, else Vercel's address, else localhost); `metadataBase` in `app/layout.tsx` uses it.
 - Known dev quirk (project lives in OneDrive): the Turbopack dev server sometimes does not pick up edits to `app/globals.css` (it keeps serving the old CSS; `.tsx` edits are fine). If a CSS change seems missing, fetch the served CSS to confirm, then restart `npm run dev`.
 
 ## Rules for working here

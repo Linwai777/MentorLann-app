@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { GlassCard } from "@/components/site/glass-card";
+import { SITE_NAME } from "@/lib/site";
 import {
   TEXT_VLOGS,
   formatDate,
@@ -31,7 +32,18 @@ export async function generateMetadata({
   return {
     title: vlog.title,
     description: vlog.summary,
-    openGraph: { images: [vlog.cover.src.src] },
+    // A page's openGraph REPLACES the layout's openGraph (it is not
+    // merged), so the site name is repeated here. The cover becomes the
+    // share picture; metadataBase turns its path into a full https link.
+    openGraph: {
+      type: "article",
+      siteName: SITE_NAME,
+      title: vlog.title,
+      description: vlog.summary,
+      publishedTime: vlog.publishedAt,
+      authors: [vlog.author],
+      images: [{ url: vlog.cover.src.src, alt: vlog.cover.alt }],
+    },
   };
 }
 

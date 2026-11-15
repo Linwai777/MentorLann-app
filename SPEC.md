@@ -29,6 +29,11 @@ All ages. Primary community: the Myanmar community in Dubai (fast mobile and hom
 8. Final call to action (built, `#join`): one GlassCard: "Your next career starts with one small step.", primary "Start with a free course" (/courses), outline "Join the community" (/community), and three true promises (free to join, no account needed yet, no experience needed). Every "Join free" button on the site (header, mobile menu, hero, footer) links to `/#join`. When accounts exist (Phase 2), "Join free" becomes the sign-up.
 9. Footer
 
+## Sharing and the site address (done 2026-11-15)
+- `lib/site.ts` gives `SITE_URL`: `NEXT_PUBLIC_SITE_URL` when set (set it to the real domain, e.g. `https://mentorlann.com`, once it exists), otherwise Vercel's production address, otherwise `http://localhost:3000`. The root layout uses it as `metadataBase`.
+- Default share picture: `public/og-image.jpg` (1200x630 screenshot of the home hero), listed in the root layout metadata with width, height and alt for Open Graph and X. Vlog articles share their own cover as `og:type=article` with date and author.
+- Do not use `app/opengraph-image.alt.txt`: the Turbopack build ignores it.
+
 ## Own pages (decided 2026-11-14; build in this order)
 1. Shared pieces (done): `PageHeader` (label + h1 + intro), honest `ComingSoon` block, nav links `/community`, `/vlogs`, `/courses`, title template "<Page> | MentorLann". Starter pages exist at all three URLs.
 2. `/courses` (built): a curated list of FREE courses from trusted providers (freeCodeCamp, Google, Microsoft Learn, ...), grouped by career path. MentorLann does not make its own courses for now. Data in a file shaped like future database rows. No progress bars before login. Now: 4 courses each for Web Development, Graphic Design and Accounting & Finance (12 links, all checked in a real browser on 2026-11-14); locked paths get courses when they unlock.

@@ -4,6 +4,7 @@ import { HowItWorks } from "@/components/home/how-it-works";
 import { CommunityPreview } from "@/components/home/community-preview";
 import { VlogsPreview } from "@/components/home/vlogs-preview";
 import { CoursesPreview } from "@/components/home/courses-preview";
+import { FinalCta } from "@/components/home/final-cta";
 
 // Home page. Each section is its own component in components/home/,
 // added one at a time (see SPEC.md for the order).
@@ -16,6 +17,7 @@ export default function Home() {
       <CommunityPreview />
       <VlogsPreview />
       <CoursesPreview />
+      <FinalCta />
     </>
   );
 }

@@ -26,7 +26,7 @@ All ages. Primary community: the Myanmar community in Dubai (fast mobile and hom
 5. Community preview (built, `#community`): the 4 planned activities as compact glass cards marked "Planned" + "Visit the community" link
 6. Knowledge-sharing vlogs preview (built, `#vlogs`): the 3 newest vlogs (same VlogCard as `/vlogs`) + "See all vlogs"; the section hides itself if there are no vlogs
 7. Courses preview (built, `#courses`): Step 1 of each open career path (same CourseCard as `/courses`, path name above each) + "Browse all free courses"; no progress bars until login exists
-8. Final call to action
+8. Final call to action (built, `#join`): one GlassCard: "Your next career starts with one small step.", primary "Start with a free course" (/courses), outline "Join the community" (/community), and three true promises (free to join, no account needed yet, no experience needed). Every "Join free" button on the site (header, mobile menu, hero, footer) links to `/#join`. When accounts exist (Phase 2), "Join free" becomes the sign-up.
 9. Footer
 
 ## Own pages (decided 2026-11-14; build in this order)

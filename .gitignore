@@ -43,3 +43,6 @@ next-env.d.ts
 # playwright checks (screenshots and logs from UI testing)
 /screenshots
 /.playwright-mcp
+
+# Prisma Client, rebuilt by "prisma generate" (do not commit)
+/lib/generated/prisma

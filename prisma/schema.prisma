@@ -1,0 +1,19 @@
+// The database schema: one place that describes every table.
+// Prisma turns it into SQL tables (migrations) and into a typed
+// TypeScript client (generate).
+//
+// The tables for users and logins are added in the next step by
+// Better Auth's CLI (npx auth generate).
+
+generator client {
+  // "prisma-client" is the Prisma 7 generator: it writes plain TypeScript
+  // files to the output folder below (not into node_modules).
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  // The connection URL is NOT written here: in Prisma 7 it lives in
+  // prisma.config.ts, which reads it from .env.local.
+}

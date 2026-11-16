@@ -5,6 +5,7 @@ import { ComingSoon } from "@/components/site/coming-soon";
 import { RevealOnScroll } from "@/components/site/reveal-on-scroll";
 import { VlogCard } from "@/components/vlogs/vlog-card";
 import { VLOGS_NEWEST_FIRST } from "@/components/vlogs/vlogs-data";
+import { MembersOnly } from "@/components/auth/members-only";
 
 // URL: /vlogs. Title in the tab: "Vlogs | MentorLann".
 export const metadata: Metadata = {
@@ -13,7 +14,17 @@ export const metadata: Metadata = {
     "Knowledge-sharing vlogs from MentorLann: short articles and videos where learners and mentors share what they know.",
 };
 
+// Members only: guests are sent to /log-in (see components/auth/members-only.tsx).
+// The check wraps the content INSIDE the page, so guests never receive it.
 export default function VlogsPage() {
+  return (
+    <MembersOnly next="/vlogs">
+      <VlogsContent />
+    </MembersOnly>
+  );
+}
+
+function VlogsContent() {
   return (
     <>
       <PageHeader

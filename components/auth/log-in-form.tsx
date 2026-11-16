@@ -10,6 +10,7 @@ import {
   SubmitButton,
 } from "@/components/auth/form-fields";
 import { useFocusFirstError } from "@/components/auth/use-focus-first-error";
+import { NextPathField } from "@/components/auth/next-path";
 
 const initialState: AuthFormState = {};
 
@@ -21,6 +22,8 @@ export function LogInForm() {
   return (
     <form ref={formRef} action={formAction} noValidate>
       <FormMessage message={state.message} />
+      {/* The page to return to after success (?next=...) */}
+      <NextPathField />
 
       <div className="space-y-5">
         <Field

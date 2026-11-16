@@ -10,6 +10,7 @@ import {
   COMMUNITY_LINKS,
   RULES,
 } from "@/components/community/community-data";
+import { MembersOnly } from "@/components/auth/members-only";
 
 // URL: /community. Title in the tab: "Community | MentorLann".
 export const metadata: Metadata = {
@@ -24,7 +25,17 @@ const LABEL =
 const H2 =
   "mt-3 font-display text-3xl leading-tight font-bold tracking-tight text-ink sm:text-4xl";
 
+// Members only: guests are sent to /log-in (see components/auth/members-only.tsx).
+// The check wraps the content INSIDE the page, so guests never receive it.
 export default function CommunityPage() {
+  return (
+    <MembersOnly next="/community">
+      <CommunityContent />
+    </MembersOnly>
+  );
+}
+
+function CommunityContent() {
   return (
     <>
       <PageHeader

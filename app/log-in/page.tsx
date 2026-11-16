@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { AuthSwitchLink } from "@/components/auth/next-path";
 import { AuthCard } from "@/components/auth/auth-card";
 import { LogInForm } from "@/components/auth/log-in-form";
 
@@ -16,12 +16,12 @@ export default function LogInPage() {
       footer={
         <>
           New here?{" "}
-          <Link
+          <AuthSwitchLink
             href="/sign-up"
             className="inline-flex min-h-11 items-center font-semibold text-royal-deep underline underline-offset-4 hover:text-royal"
           >
             Join free
-          </Link>
+          </AuthSwitchLink>
         </>
       }
     >

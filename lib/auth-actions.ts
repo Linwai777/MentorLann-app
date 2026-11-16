@@ -7,6 +7,7 @@ import { APIError } from "better-auth/api";
 import { auth } from "@/lib/auth";
 import {
   logInSchema,
+  safeNextPath,
   signUpSchema,
   type AuthFormState,
 } from "@/lib/validation/auth";
@@ -57,9 +58,10 @@ export async function signUp(
     return { message: "Something went wrong. Please try again.", values };
   }
 
-  // 3. Signed up and logged in. redirect() must stay OUTSIDE try/catch:
-  //    it works by throwing, and the catch above would swallow it.
-  redirect("/");
+  // 3. Signed up and logged in: go to the page they wanted (?next=...),
+  //    or home. redirect() must stay OUTSIDE try/catch: it works by
+  //    throwing, and the catch above would swallow it.
+  redirect(safeNextPath(formData.get("next")));
 }
 
 export async function logIn(
@@ -90,5 +92,5 @@ export async function logIn(
     return { message: "Something went wrong. Please try again.", values };
   }
 
-  redirect("/");
+  redirect(safeNextPath(formData.get("next")));
 }

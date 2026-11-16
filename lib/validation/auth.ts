@@ -37,6 +37,21 @@ export const logInSchema = z.object({
   password: z.string().min(1, "Enter your password."),
 });
 
+// Where to go after logging in / signing up: the "next" value from the
+// URL (?next=/courses), set when a guest was sent to log in.
+// It comes from the URL, so anyone can change it. Only paths on THIS site
+// are allowed ("/courses"); "https://evil.com" or "//evil.com" (which a
+// browser also treats as another site) fall back to the home page.
+// Without this check the page would be an "open redirect" that attackers
+// could use in phishing links.
+export function safeNextPath(value: unknown): string {
+  if (typeof value !== "string") return "/";
+  if (!value.startsWith("/") || value.startsWith("//") || value.startsWith("/\\")) {
+    return "/";
+  }
+  return value;
+}
+
 // What a form action sends back to the form after a failed try.
 // - errors: messages per field, shown under that field
 // - message: one message for the whole form (e.g. wrong password)

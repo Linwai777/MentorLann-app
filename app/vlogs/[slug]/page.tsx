@@ -12,6 +12,7 @@ import {
   readingMinutes,
   type VlogBlock,
 } from "@/components/vlogs/vlogs-data";
+import { MembersOnly } from "@/components/auth/members-only";
 
 // [slug] in the folder name = a dynamic segment: /vlogs/<anything>.
 // The value arrives in `params`, which is a Promise in Next.js 16.
@@ -47,7 +48,20 @@ export async function generateMetadata({
   };
 }
 
-export default async function VlogArticlePage({
+// Members only (see components/auth/members-only.tsx).
+// The return path is built from params WITHOUT awaiting it here: params
+// is read inside the Suspense boundary of MembersOnly, so the page shell
+// still loads instantly.
+export default function VlogArticlePage(props: PageProps<"/vlogs/[slug]">) {
+  const next = props.params.then(({ slug }) => `/vlogs/${slug}`);
+  return (
+    <MembersOnly next={next}>
+      <VlogArticle {...props} />
+    </MembersOnly>
+  );
+}
+
+async function VlogArticle({
   params,
 }: PageProps<"/vlogs/[slug]">) {
   const { slug } = await params;

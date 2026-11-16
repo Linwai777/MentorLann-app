@@ -7,6 +7,7 @@ import { RevealOnScroll } from "@/components/site/reveal-on-scroll";
 import { CourseCard } from "@/components/courses/course-card";
 import { coursesForPath } from "@/components/courses/courses-data";
 import { CAREER_PATHS } from "@/components/home/career-paths-data";
+import { MembersOnly } from "@/components/auth/members-only";
 
 // The folder name app/courses/ becomes the URL /courses (App Router).
 // "Courses" + the layout's template = "Courses | MentorLann" in the tab.
@@ -20,7 +21,17 @@ export const metadata: Metadata = {
 const OPEN_PATHS = CAREER_PATHS.filter((path) => !path.locked);
 const LOCKED_PATHS = CAREER_PATHS.filter((path) => path.locked);
 
+// Members only: guests are sent to /log-in (see components/auth/members-only.tsx).
+// The check wraps the content INSIDE the page, so guests never receive it.
 export default function CoursesPage() {
+  return (
+    <MembersOnly next="/courses">
+      <CoursesContent />
+    </MembersOnly>
+  );
+}
+
+function CoursesContent() {
   return (
     <>
       <PageHeader

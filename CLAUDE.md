@@ -6,7 +6,7 @@ Slogan: "Better experience for every client and visitor." Every design and code 
 
 ## Project
 
-"MentorLann": a learning + community website for future-career learners, built with Next.js (App Router), Tailwind CSS v4 and TypeScript. Product scope and section order are in [SPEC.md](SPEC.md). Planned backend: PostgreSQL on Supabase + Prisma + Zod (Supabase Auth is not used); the auth library is still to be decided (Better Auth vs Auth.js, see SPEC.md). Backend is Phase 2 and nothing is installed or connected yet. Site language is English only; tagline: "Learn Together. Grow Together." Brand colors: navy, royal blue, green, white (see DESIGN.md).
+"MentorLann": a learning + community website for future-career learners, built with Next.js (App Router), Tailwind CSS v4 and TypeScript. Product scope and section order are in [SPEC.md](SPEC.md). Planned backend: PostgreSQL on Supabase + Prisma + Zod (Supabase Auth is not used); the auth library is Better Auth (email + password first). Backend is Phase 2 (in progress, see SPEC.md): the Supabase project exists and its connection strings are in the git-ignored `.env.local`; no backend packages are installed yet. Site language is English only; tagline: "Learn Together. Grow Together." Brand colors: navy, royal blue, green, white (see DESIGN.md).
 
 ## Working mode: Claude writes, Lin Wai reads and learns (set by Lin Wai, updated)
 

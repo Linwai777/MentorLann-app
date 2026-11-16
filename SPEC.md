@@ -59,7 +59,8 @@ Route progress line, animated counters, skills marquee, hover-lift path cards, l
 - Next.js 16 App Router, Tailwind v4, TypeScript.
 - shadcn/ui for interactive parts (navigation menu, dialog, tabs, accordion).
 - Layout inspiration: 21st.dev patterns (reference only, do not copy).
-- Backend (decided): PostgreSQL hosted on Supabase, accessed through Prisma ORM, with Zod for validation. Supabase Auth is NOT used, so there is only one auth system. Auth library: DECISION PENDING between Better Auth (recommended: Auth.js is now security-fixes-only and its own team recommends Better Auth for new projects) and Auth.js as originally planned. Nothing backend is installed in Phase 1.
+- Backend (decided): PostgreSQL hosted on Supabase, accessed through Prisma ORM, with Zod for validation. Supabase Auth is NOT used, so there is only one auth system. Auth library: **Better Auth** (decided 2026-11-16), **email + password only** for the first version (Google login, email verification and password reset come later; they need OAuth keys and an email service).
+- Phase 2 progress: (1) Supabase project "MentorLann" created by Lin Wai (Region: Auto; Data API OFF, "expose new tables" OFF, automatic RLS ON: we only reach the database through Prisma on the server). Secrets live in `.env.local` (git-ignored): `DATABASE_URL` = Transaction pooler, port 6543, `?pgbouncer=true` (app runtime); `DIRECT_URL` = Session pooler, port 5432 (Prisma CLI / migrations); `BETTER_AUTH_SECRET` (generated locally); `BETTER_AUTH_URL`. Never paste these values into chat or commits. Next: (2) Prisma + first tables, (3) Better Auth server, (4) sign up / log in pages, (5) header user state + "Join free" to /sign-up.
 - Language: English only for now. Burmese UI is deferred (it would also need a Myanmar-script font, because Poppins and Inter do not include Myanmar glyphs).
 - Tagline: "Learn Together. Grow Together."
 

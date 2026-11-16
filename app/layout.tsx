@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", images: [SHARE_IMAGE] },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children, modal }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
@@ -73,6 +73,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        {/* The log-in / sign-up popup (app/@modal), or nothing */}
+        {modal}
       </body>
     </html>
   );

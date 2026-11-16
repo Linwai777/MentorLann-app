@@ -25,11 +25,24 @@ const LABEL =
 const H2 =
   "mt-3 font-display text-3xl leading-tight font-bold tracking-tight text-ink sm:text-4xl";
 
-// Members only: guests are sent to /log-in (see components/auth/members-only.tsx).
-// The check wraps the content INSIDE the page, so guests never receive it.
+// The page header text, used by the page AND by the guest view.
+const HEADER = {
+  label: "Community",
+  title: "Grow together with people like you.",
+  intro:
+    "MentorLann is a free community for learners from Myanmar and beyond, starting in Dubai. We are just getting started, so you can be one of the first members.",
+};
+
+// Members only: guests see the page header and a "Members only" panel
+// (see components/auth/members-only.tsx).
+// The check wraps the content INSIDE the page, so guests never receive the content.
 export default function CommunityPage() {
   return (
-    <MembersOnly next="/community">
+    <MembersOnly
+      next="/community"
+      what="the community activities and how to join"
+      guest={<PageHeader {...HEADER} />}
+    >
       <CommunityContent />
     </MembersOnly>
   );
@@ -38,11 +51,7 @@ export default function CommunityPage() {
 function CommunityContent() {
   return (
     <>
-      <PageHeader
-        label="Community"
-        title="Grow together with people like you."
-        intro="MentorLann is a free community for learners from Myanmar and beyond, starting in Dubai. We are just getting started, so you can be one of the first members."
-      />
+      <PageHeader {...HEADER} />
 
       {/* 1. What we plan to do. Every card says "Planned" until it is real. */}
       <section

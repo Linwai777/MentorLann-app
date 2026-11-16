@@ -12,6 +12,10 @@ import {
 } from "@/components/ui/sheet";
 import { NAV_LINKS } from "@/components/site/nav-links";
 import { NavLink } from "@/components/site/nav-link";
+import {
+  DesktopAccount,
+  MobileAccount,
+} from "@/components/site/account-actions";
 
 // The brand logo (from the MentorLann brand kit). It is an outlined SVG, so it
 // looks sharp at any size and needs no font. width/height are the file's real
@@ -72,29 +76,14 @@ export function Header() {
           {/* Desktop navigation */}
           {/* Full link row only from 1024px: with 5 links, tablets would wrap */}
           <nav aria-label="Main" className="hidden lg:block">
-            <ul className="flex items-center gap-1">
-              {NAV_LINKS.map((link) => (
-                <li key={link.href}>
-                  <NavLink
-                    href={link.href}
-                    // Navy (not grey) text: grey drops to 4:1 on the glass.
-                    // aria-[current=page]: styles the link of the page you
-                    // are on, set by NavLink: a royal-tint pill with a thin
-                    // royal ring, royal text, and a short royal bar under
-                    // the word (the ::after line), so it is easy to spot.
-                    className="inline-flex min-h-11 items-center rounded-lg px-3 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-white/60 hover:text-royal-deep relative aria-[current=page]:bg-royal/10 aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep aria-[current=page]:ring-1 aria-[current=page]:ring-royal/30 aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-1 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-royal"
-                  >
-                    {link.label}
-                  </NavLink>
-                </li>
-              ))}
+            <ul className="flex items-center gap-0.5 xl:gap-1">
+              <DesktopItems />
             </ul>
           </nav>
 
           <div className="flex items-center gap-2">
-            <Button asChild className="hidden md:inline-flex">
-              <Link href="/#join">Join free</Link>
-            </Button>
+            {/* Guests: Log in + Join free. Members: name + Log out. */}
+            <DesktopAccount />
 
             {/* Mobile menu: shadcn Sheet gives focus trap, Esc to close, aria roles */}
             <Sheet>
@@ -122,32 +111,60 @@ export function Header() {
                 </div>
                 <nav aria-label="Mobile" className="flex-1 overflow-y-auto p-4">
                   <ul className="flex flex-col">
-                    {NAV_LINKS.map((link) => (
-                      <li key={link.href} className="border-b border-line">
-                        <SheetClose asChild>
-                          <NavLink
-                            href={link.href}
-                            className="flex min-h-14 items-center rounded-lg border-l-4 border-transparent px-3 text-lg font-medium text-ink aria-[current=page]:border-royal aria-[current=page]:bg-royal/10 aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep"
-                          >
-                            {link.label}
-                          </NavLink>
-                        </SheetClose>
-                      </li>
-                    ))}
+                    <MobileItems />
                   </ul>
                 </nav>
                 <div className="border-t border-line p-4">
-                  <SheetClose asChild>
-                    <Button asChild className="w-full">
-                      <Link href="/#join">Join free</Link>
-                    </Button>
-                  </SheetClose>
+                  <MobileAccount />
                 </div>
               </SheetContent>
             </Sheet>
           </div>
         </div>
       </header>
+    </>
+  );
+}
+
+// Desktop link items.
+function DesktopItems() {
+  return (
+    <>
+      {NAV_LINKS.map((link) => (
+        <li key={link.href}>
+          <NavLink
+            href={link.href}
+            // Navy (not grey) text: grey drops to 4:1 on the glass.
+            // aria-[current=page]: styles the link of the page you
+            // are on, set by NavLink: a royal-tint pill with a thin
+            // royal ring, royal text, and a short royal bar under
+            // the word (the ::after line), so it is easy to spot.
+            className="relative inline-flex min-h-11 items-center rounded-lg px-2.5 text-[15px] font-medium whitespace-nowrap text-ink transition-colors duration-200 hover:bg-white/60 hover:text-royal-deep xl:px-3 aria-[current=page]:bg-royal/10 aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep aria-[current=page]:ring-1 aria-[current=page]:ring-royal/30 aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-3 aria-[current=page]:after:bottom-1 aria-[current=page]:after:h-0.5 aria-[current=page]:after:rounded-full aria-[current=page]:after:bg-royal"
+          >
+            {link.label}
+          </NavLink>
+        </li>
+      ))}
+    </>
+  );
+}
+
+// Mobile menu link items.
+function MobileItems() {
+  return (
+    <>
+      {NAV_LINKS.map((link) => (
+        <li key={link.href} className="border-b border-line">
+          <SheetClose asChild>
+            <NavLink
+              href={link.href}
+              className="flex min-h-14 items-center rounded-lg border-l-4 border-transparent px-3 text-lg font-medium text-ink aria-[current=page]:border-royal aria-[current=page]:bg-royal/10 aria-[current=page]:font-semibold aria-[current=page]:text-royal-deep"
+            >
+              {link.label}
+            </NavLink>
+          </SheetClose>
+        </li>
+      ))}
     </>
   );
 }

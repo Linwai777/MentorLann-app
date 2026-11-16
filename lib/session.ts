@@ -2,7 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { auth } from "@/lib/auth";
 
 // The ONE place that answers "who is logged in?" (a "Data Access Layer").
@@ -14,16 +14,12 @@ import { auth } from "@/lib/auth";
 // cache(): if 3 components ask during the same request, the database is
 // asked only once.
 export const getSession = cache(async () => {
+  // connection(): "this must run at request time, never in a prerender".
+  // Checking a session compares its expiry date with the current time
+  // (new Date() inside Better Auth), and Next.js does not allow reading
+  // the current time while prerendering, even a prerender that already
+  // has the request headers (it does one after a log-in redirect).
+  await connection();
   return auth.api.getSession({ headers: await headers() });
 });
 
-// requireUser: for members-only content. A guest (or an expired login)
-// is sent to the log-in page; "next" remembers where they wanted to go,
-// so after logging in they come straight back.
-export async function requireUser(nextPath: string) {
-  const session = await getSession();
-  if (!session) {
-    redirect(`/log-in?next=${encodeURIComponent(nextPath)}`);
-  }
-  return session.user;
-}

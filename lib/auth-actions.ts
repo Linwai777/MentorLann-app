@@ -28,7 +28,10 @@ export async function signUp(
   _prev: AuthFormState,
   formData: FormData,
 ): Promise<AuthFormState> {
-  const values = { name: text(formData, "name"), email: text(formData, "email") };
+  const values = {
+    name: text(formData, "name"),
+    email: text(formData, "email"),
+  };
 
   // 1. Check the fields. If a rule fails, send the messages back.
   const parsed = signUpSchema.safeParse({
@@ -51,7 +54,9 @@ export async function signUp(
     const code = error instanceof APIError ? error.body?.code : undefined;
     if (code?.startsWith("USER_ALREADY_EXISTS")) {
       return {
-        errors: { email: ["An account with this email already exists. Log in instead."] },
+        errors: {
+          email: ["An account with this email already exists. Log in instead."],
+        },
         values,
       };
     }
@@ -93,4 +98,16 @@ export async function logIn(
   }
 
   redirect(safeNextPath(formData.get("next")));
+}
+
+// Log out: Better Auth deletes the session in the database and (through
+// the nextCookies plugin) removes the login cookie. Then go home.
+// Used by a plain <form action={logOut}>, so it works without JavaScript.
+export async function logOut() {
+  try {
+    await auth.api.signOut({ headers: await headers() });
+  } catch {
+    // Already logged out (or the session expired): nothing to undo.
+  }
+  redirect("/");
 }

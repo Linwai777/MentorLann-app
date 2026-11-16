@@ -13,6 +13,7 @@ import {
   type VlogBlock,
 } from "@/components/vlogs/vlogs-data";
 import { MembersOnly } from "@/components/auth/members-only";
+import { PageHeader } from "@/components/site/page-header";
 
 // [slug] in the folder name = a dynamic segment: /vlogs/<anything>.
 // The value arrives in `params`, which is a Promise in Next.js 16.
@@ -55,15 +56,26 @@ export async function generateMetadata({
 export default function VlogArticlePage(props: PageProps<"/vlogs/[slug]">) {
   const next = props.params.then(({ slug }) => `/vlogs/${slug}`);
   return (
-    <MembersOnly next={next}>
+    <MembersOnly
+      next={next}
+      what="this article"
+      guest={<GuestArticleHeader {...props} />}
+    >
       <VlogArticle {...props} />
     </MembersOnly>
   );
 }
 
-async function VlogArticle({
-  params,
-}: PageProps<"/vlogs/[slug]">) {
+// Guests see only the article's title and its one-line summary (the same
+// text the vlog card and the share preview already show), not the article.
+async function GuestArticleHeader({ params }: PageProps<"/vlogs/[slug]">) {
+  const { slug } = await params;
+  const vlog = getTextVlog(slug);
+  if (!vlog) notFound();
+  return <PageHeader label="Vlog" title={vlog.title} intro={vlog.summary} />;
+}
+
+async function VlogArticle({ params }: PageProps<"/vlogs/[slug]">) {
   const { slug } = await params;
   const vlog = getTextVlog(slug);
   // Unknown slug (or a video vlog, which has no page here): show the 404

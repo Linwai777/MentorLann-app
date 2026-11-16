@@ -27,6 +27,8 @@ function NextPathInput() {
 
 // A link to the other auth page that keeps ?next=..., so a guest who
 // switches from "Log in" to "Join free" still comes back to their page.
+// replace: switching does not add a history step, so closing the popup
+// (router.back) returns to the page underneath, not to the other form.
 export function AuthSwitchLink({
   href,
   children,
@@ -37,7 +39,7 @@ export function AuthSwitchLink({
   className?: string;
 }) {
   const plain = (
-    <Link href={href} className={className}>
+    <Link href={href} replace className={className}>
       {children}
     </Link>
   );
@@ -62,7 +64,7 @@ function SwitchLinkWithNext({
   const next = useSearchParams().get("next");
   const target = next ? `${href}?next=${encodeURIComponent(next)}` : href;
   return (
-    <Link href={target} className={className}>
+    <Link href={target} replace className={className}>
       {children}
     </Link>
   );

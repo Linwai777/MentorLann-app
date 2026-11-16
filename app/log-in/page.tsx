@@ -1,31 +1,15 @@
 import type { Metadata } from "next";
-import { AuthSwitchLink } from "@/components/auth/next-path";
 import { AuthCard } from "@/components/auth/auth-card";
-import { LogInForm } from "@/components/auth/log-in-form";
+import { LogInScreen } from "@/components/auth/auth-screens";
 
 export const metadata: Metadata = {
   title: "Log in",
   description: "Log in to your MentorLann account.",
 };
 
-export default function LogInPage() {
-  return (
-    <AuthCard
-      title="Welcome back"
-      intro="Log in to continue learning with MentorLann."
-      footer={
-        <>
-          New here?{" "}
-          <AuthSwitchLink
-            href="/sign-up"
-            className="inline-flex min-h-11 items-center font-semibold text-royal-deep underline underline-offset-4 hover:text-royal"
-          >
-            Join free
-          </AuthSwitchLink>
-        </>
-      }
-    >
-      <LogInForm />
-    </AuthCard>
-  );
+// The full log-in page: shown when /log-in is opened directly (a link in
+// an email, a refresh). Clicks inside the site open the popup instead
+// (app/@modal/(.)log-in).
+export default function LogInPage({ searchParams }: PageProps<"/log-in">) {
+  return <LogInScreen Frame={AuthCard} searchParams={searchParams} />;
 }

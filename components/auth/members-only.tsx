@@ -1,41 +1,63 @@
 import { Suspense, type ReactNode } from "react";
-import { requireUser } from "@/lib/session";
+import { getSession } from "@/lib/session";
+import { MembersOnlyPanel } from "@/components/auth/members-only-panel";
 
-// Wrap members-only content with this (used by the layouts of /community,
-// /vlogs and /courses). It is the REAL lock: proxy.ts only checks that a
-// cookie exists, this checks the session in the database.
+// Wrap members-only content with this, INSIDE the page (/community,
+// /vlogs, each article, /courses). It checks the session in the database:
+// - member: sees the page (children)
+// - guest: stays on the page and sees `guest` (the page header) plus the
+//   "Members only" panel with Join free / Log in.
 //
 // Why <Suspense>: with cacheComponents, reading cookies is request-time
 // work and must sit inside a Suspense boundary. The header and footer
 // still load at once from the static shell; this part streams in after
 // the check. Guests never receive the members-only HTML, because the
-// children are only rendered after requireUser() lets them through.
+// children are only rendered for a logged-in member.
 //
-// next: the page to come back to after log in. It can be a Promise (the
-// vlog article builds it from `params`), so it is read inside Suspense.
+// next: this page's path, for the buttons' ?next=. It can be a Promise
+// (the vlog article builds it from `params`), so it is read inside Suspense.
 export function MembersOnly({
   next,
+  what,
+  guest,
   children,
 }: {
   next: string | Promise<string>;
+  /** For the panel sentence: "Create a free account to see {what}." */
+  what: string;
+  /** Shown to guests above the panel (usually the page header) */
+  guest: ReactNode;
   children: ReactNode;
 }) {
   return (
     <Suspense fallback={<CheckingAccount />}>
-      <Gate next={next}>{children}</Gate>
+      <Gate next={next} what={what} guest={guest}>
+        {children}
+      </Gate>
     </Suspense>
   );
 }
 
 async function Gate({
   next,
+  what,
+  guest,
   children,
 }: {
   next: string | Promise<string>;
+  what: string;
+  guest: ReactNode;
   children: ReactNode;
 }) {
-  await requireUser(await next); // guests are redirected to /log-in here
-  return children;
+  const session = await getSession();
+  if (session) return children;
+
+  return (
+    <>
+      {guest}
+      <MembersOnlyPanel what={what} next={await next} />
+    </>
+  );
 }
 
 // Shown for a moment while the session is checked: an empty soft-blue

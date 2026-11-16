@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cacheLife } from "next/cache";
 import { Button } from "@/components/ui/button";
+import { GuestOrMember } from "@/components/auth/guest-or-member";
 import { NAV_LINKS } from "@/components/site/nav-links";
 
 // With Cache Components on, `new Date()` must be inside a "use cache" scope.
@@ -71,9 +72,18 @@ export function Footer() {
             Join free and find your next step.
           </p>
           {/* Light button: a royal button would blend into the navy background */}
-          <Button asChild variant="secondary" className="mt-4">
-            <Link href="/#join">Join free</Link>
-          </Button>
+          <GuestOrMember
+            guest={
+              <Button asChild variant="secondary" className="mt-4">
+                <Link href="/sign-up">Join free</Link>
+              </Button>
+            }
+            member={
+              <Button asChild variant="secondary" className="mt-4">
+                <Link href="/courses">Browse free courses</Link>
+              </Button>
+            }
+          />
         </div>
       </div>
 

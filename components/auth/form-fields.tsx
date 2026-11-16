@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ComponentProps } from "react";
+import { useId, useState, type ComponentProps } from "react";
 import { CircleAlert, Eye, EyeOff, LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -24,7 +24,9 @@ type FieldProps = {
 // aria-describedby links the hint and the error to the input, so a screen
 // reader reads them together with the label when the input gets focus.
 export function Field({ name, label, hint, error, ...inputProps }: FieldProps) {
-  const id = `field-${name}`;
+  // useId: a unique id per field, even if the same form is on the page
+  // twice (e.g. a hidden earlier popup kept by Next.js + the new one).
+  const id = `${useId()}-${name}`;
   const describedBy =
     [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(" ") ||
     undefined;
@@ -61,7 +63,9 @@ export function PasswordField({
   ...inputProps
 }: FieldProps) {
   const [visible, setVisible] = useState(false);
-  const id = `field-${name}`;
+  // useId: a unique id per field, even if the same form is on the page
+  // twice (e.g. a hidden earlier popup kept by Next.js + the new one).
+  const id = `${useId()}-${name}`;
   const describedBy =
     [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(" ") ||
     undefined;

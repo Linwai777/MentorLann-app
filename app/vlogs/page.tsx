@@ -14,11 +14,24 @@ export const metadata: Metadata = {
     "Knowledge-sharing vlogs from MentorLann: short articles and videos where learners and mentors share what they know.",
 };
 
-// Members only: guests are sent to /log-in (see components/auth/members-only.tsx).
-// The check wraps the content INSIDE the page, so guests never receive it.
+// The page header text, used by the page AND by the guest view.
+const HEADER = {
+  label: "Knowledge-sharing vlogs",
+  title: "Learn from people on the same path.",
+  intro:
+    "Short articles and videos where learners and mentors share what they know: tips, first jobs, mistakes and wins.",
+};
+
+// Members only: guests see the page header and a "Members only" panel
+// (see components/auth/members-only.tsx).
+// The check wraps the content INSIDE the page, so guests never receive the content.
 export default function VlogsPage() {
   return (
-    <MembersOnly next="/vlogs">
+    <MembersOnly
+      next="/vlogs"
+      what="all the vlogs"
+      guest={<PageHeader {...HEADER} />}
+    >
       <VlogsContent />
     </MembersOnly>
   );
@@ -27,11 +40,7 @@ export default function VlogsPage() {
 function VlogsContent() {
   return (
     <>
-      <PageHeader
-        label="Knowledge-sharing vlogs"
-        title="Learn from people on the same path."
-        intro="Short articles and videos where learners and mentors share what they know: tips, first jobs, mistakes and wins."
-      />
+      <PageHeader {...HEADER} />
       <section aria-label="All vlogs" className="bg-white py-16 md:py-24">
         <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6">
           {VLOGS_NEWEST_FIRST.length > 0 ? (

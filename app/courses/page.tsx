@@ -21,11 +21,24 @@ export const metadata: Metadata = {
 const OPEN_PATHS = CAREER_PATHS.filter((path) => !path.locked);
 const LOCKED_PATHS = CAREER_PATHS.filter((path) => path.locked);
 
-// Members only: guests are sent to /log-in (see components/auth/members-only.tsx).
-// The check wraps the content INSIDE the page, so guests never receive it.
+// The page header text, used by the page AND by the guest view.
+const HEADER = {
+  label: "Courses",
+  title: "Free courses, picked for you.",
+  intro:
+    "We choose the best free lessons from trusted places like freeCodeCamp, Khan Academy and Adobe, and put them in order for each career path. Start at step 1.",
+};
+
+// Members only: guests see the page header and a "Members only" panel
+// (see components/auth/members-only.tsx).
+// The check wraps the content INSIDE the page, so guests never receive the content.
 export default function CoursesPage() {
   return (
-    <MembersOnly next="/courses">
+    <MembersOnly
+      next="/courses"
+      what="the free courses for every career path"
+      guest={<PageHeader {...HEADER} />}
+    >
       <CoursesContent />
     </MembersOnly>
   );
@@ -34,11 +47,7 @@ export default function CoursesPage() {
 function CoursesContent() {
   return (
     <>
-      <PageHeader
-        label="Courses"
-        title="Free courses, picked for you."
-        intro="We choose the best free lessons from trusted places like freeCodeCamp, Khan Academy and Adobe, and put them in order for each career path. Start at step 1."
-      >
+      <PageHeader {...HEADER}>
         {/* Jump links: plain anchor links to each path's section below.
             Works without any JavaScript (unlike a filter with state). */}
         <nav aria-label="Jump to a career path" className="mt-8">

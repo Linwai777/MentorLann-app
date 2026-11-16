@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GuestOrMember } from "@/components/auth/guest-or-member";
 import { HeroReveal } from "@/components/home/hero-reveal";
 import { HeroNodes } from "@/components/home/hero-nodes";
 // Static import: Next.js reads the width/height at build time (no layout shift)
@@ -101,16 +102,33 @@ export function Hero() {
         <div data-hero-reveal className="mt-8 flex flex-col gap-3 sm:flex-row">
           {/* Primary: royal, like the brand. White text on royal is 6.7:1.
               The arrow slides right on hover to say "this takes you forward". */}
-          <Button asChild className="hover:shadow-lg hover:shadow-royal/40">
-            <Link href="/#join">
-              Join free
-              <ArrowRight
-                aria-hidden="true"
-                data-icon="inline-end"
-                className="size-5 transition-transform duration-200 group-hover/button:translate-x-1"
-              />
-            </Link>
-          </Button>
+          {/* Guests: Join free (sign up). Members: back to the courses. */}
+          <GuestOrMember
+            guest={
+              <Button asChild className="hover:shadow-lg hover:shadow-royal/40">
+                <Link href="/sign-up">
+                  Join free
+                  <ArrowRight
+                    aria-hidden="true"
+                    data-icon="inline-end"
+                    className="size-5 transition-transform duration-200 group-hover/button:translate-x-1"
+                  />
+                </Link>
+              </Button>
+            }
+            member={
+              <Button asChild className="hover:shadow-lg hover:shadow-royal/40">
+                <Link href="/courses">
+                  Continue learning
+                  <ArrowRight
+                    aria-hidden="true"
+                    data-icon="inline-end"
+                    className="size-5 transition-transform duration-200 group-hover/button:translate-x-1"
+                  />
+                </Link>
+              </Button>
+            }
+          />
           <Button
             asChild
             variant="outline"

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Lock } from "lucide-react";
 import { PageHeader } from "@/components/site/page-header";
-import { GlassCard } from "@/components/site/glass-card";
 import { RevealOnScroll } from "@/components/site/reveal-on-scroll";
 import { CourseCard } from "@/components/courses/course-card";
 import { coursesForPath } from "@/components/courses/courses-data";
@@ -17,9 +15,8 @@ export const metadata: Metadata = {
     "Free courses from trusted places like freeCodeCamp, Khan Academy and Adobe, put in order for each MentorLann career path.",
 };
 
-// Open paths get course lists; locked paths are listed as "coming".
+// Open paths get course lists.
 const OPEN_PATHS = CAREER_PATHS.filter((path) => !path.locked);
-const LOCKED_PATHS = CAREER_PATHS.filter((path) => path.locked);
 
 // The page header text, used by the page AND by the guest view.
 const HEADER = {
@@ -110,40 +107,9 @@ function CoursesContent() {
         );
       })}
 
-      {/* The locked paths: honest "not yet", same wording as the home page */}
-      <section
-        aria-labelledby="more-paths-title"
-        className="bg-white py-16 md:py-20"
-      >
+      <section className="bg-white py-12 md:py-16">
         <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6">
-          <GlassCard className="p-6 sm:p-8">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h2
-                  id="more-paths-title"
-                  className="font-display text-2xl font-semibold text-ink"
-                >
-                  More career paths are coming
-                </h2>
-                <p className="mt-2 text-ink-soft">
-                  We will unlock these career paths and their courses later.
-                </p>
-              </div>
-              <ul className="flex flex-wrap gap-2">
-                {LOCKED_PATHS.map(({ slug, title }) => (
-                  <li
-                    key={slug}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/60 px-4 py-2 text-sm font-medium text-ink"
-                  >
-                    <Lock aria-hidden="true" className="size-4" />
-                    {title}
-                    <span className="sr-only">(locked)</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </GlassCard>
-          <p className="mt-6 text-sm text-ink-soft">
+          <p className="text-sm text-ink-soft">
             All courses here are free to use. MentorLann is not paid by these
             providers; we choose them only because they are good for beginners.
           </p>

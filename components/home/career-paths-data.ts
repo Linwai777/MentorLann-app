@@ -1,17 +1,10 @@
-import {
-  BarChart3,
-  Calculator,
-  Code2,
-  Megaphone,
-  Palette,
-  PenTool,
-  type LucideIcon,
-} from "lucide-react";
+import { Code2, Megaphone, PenTool, type LucideIcon } from "lucide-react";
 
 // The career paths shown on the home page. Content lives here, separate from
 // the layout, so adding or editing a path never means touching the JSX.
-// Chosen for the MentorLann community (Myanmar learners, many in Dubai):
-// fields with real entry-level demand that can be learned for free online.
+// MentorLann focuses on three paths: Web Development, Graphic Design and
+// Digital Marketing. All have real entry-level demand and can be learned
+// for free online.
 export type CareerPath = {
   slug: string; // future page: /paths/<slug>
   title: string;
@@ -22,7 +15,7 @@ export type CareerPath = {
   locked?: boolean;
 };
 
-// Order: the 3 open paths first, then the 3 locked ones.
+// All 3 paths are open. (Set `locked: true` on a path to blur it behind a lock.)
 export const CAREER_PATHS: CareerPath[] = [
   {
     slug: "web-development",
@@ -39,34 +32,10 @@ export const CAREER_PATHS: CareerPath[] = [
     icon: PenTool,
   },
   {
-    slug: "accounting-finance",
-    title: "Accounting & Finance",
-    description: "Keep a business's money organised, from books to VAT.",
-    skills: ["Bookkeeping", "Excel", "UAE VAT basics"],
-    icon: Calculator,
-  },
-  {
-    slug: "ui-ux-design",
-    title: "UI/UX Design",
-    description: "Design apps and websites that are clear and easy to use.",
-    skills: ["Figma", "User research", "Prototyping"],
-    icon: Palette,
-    locked: true,
-  },
-  {
     slug: "digital-marketing",
     title: "Digital Marketing",
     description: "Help businesses grow with social media and search.",
     skills: ["Social media", "SEO", "Content"],
     icon: Megaphone,
-    locked: true,
-  },
-  {
-    slug: "data-analysis",
-    title: "Data Analysis",
-    description: "Turn numbers into answers that help teams decide.",
-    skills: ["Excel", "SQL", "Power BI"],
-    icon: BarChart3,
-    locked: true,
   },
 ];
